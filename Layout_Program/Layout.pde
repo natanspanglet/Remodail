@@ -25,10 +25,10 @@ class Layout {
     //Initialize values for coordinates of the bounds of the design rectangle and dimensions of individual cells
     this.numCityRows = r;
     this.numCityCols = c;
-    this.leftBound = 100;
-    this.rightBound = 700;
-    this.upBound = 50;
-    this.lowBound = 400;
+    this.leftBound = 0;
+    this.rightBound = width;
+    this.upBound = 0;
+    this.lowBound = height;
     this.cellWidth = (this.rightBound - this.leftBound) / this.numCityCols;
     this.cellHeight = (this.lowBound - this.upBound) / this.numCityRows;
     
@@ -97,7 +97,7 @@ class Layout {
         
         //Building
         else {
-          fill(0, 0, 0);
+          fill(0, 0, 255);
         }
         
         //Draw the rectangle fo the according colour
