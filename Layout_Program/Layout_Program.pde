@@ -4,6 +4,29 @@ import g4p_controls.*;
 //Creating a layout
 Layout layout;
 
+String screenType;
+
+int personWidth = 20;
+color[] skinTones = {
+  color(45, 34, 40),
+  color(60, 46, 40),
+  color(75, 57, 50),
+  color(90, 69, 60),
+  color(105, 80, 70),
+  color(120, 92, 80),
+  color(135, 103, 90),
+  color(150, 114, 100),
+  color(165, 126, 110),
+  color(180, 138, 120),
+  color(195, 149, 130),
+  color(210, 161, 140),
+  color(225, 172, 150),
+  color(240, 184, 160),
+  color(255, 195, 170),
+  color(255, 206, 180)
+};
+
+
 int rows =7;
 int cols = 12;
 //Screen size will be 800 by 600
@@ -11,6 +34,9 @@ void setup() {
   size(800,600);
   createGUI();
   layout = new Layout(rows, cols); 
+  
+  screenType = "building";
+  
   PFont f1 = createFont("Arial", 36);
   textFont(f1);
   background(0, 255, 0);
