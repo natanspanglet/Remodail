@@ -8,6 +8,8 @@ float colSpacing;
 
 String screenType;
 
+float carSize;
+
 Person[] population;
 int personWidth = 20;
 color[] skinTones = {
@@ -38,10 +40,11 @@ void setup() {
   createGUI();
   layout = new Layout(rows, cols); 
   
-  screenType = "building";
+  screenType = "display";
   
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
+  carSize = height / float(rows) - 20;
   
   population = new Person[50];
   for (int i = 0; i < population.length; i++) {
@@ -62,6 +65,8 @@ void setup() {
   textFont(f1);
   background(0, 255, 0);
   
+  
+  
 }
 
 //Draw the grid, its features, and the preStructure() function of the Layout
@@ -69,11 +74,13 @@ void setup() {
 void draw() {
   println(rows, cols);  
   
+  
   layout.drawGrid();
   if(layout.buttonClicked == true) {
     layout.preStructure();
   }
-  
+
+
   if (screenType.equals("display")) {
     for(Person p: population) {
       p.drawMe();

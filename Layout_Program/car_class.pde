@@ -1,6 +1,5 @@
 class Car{
   int xCoord, yCoord, speed;
-  float size;
   
   Car(int s, int x, int y){
     this.speed = s;
@@ -8,14 +7,12 @@ class Car{
     this.yCoord = y;
   }
   
-  void update(){
-    xCoord += speed;
-    size = height / float(rows) - 20;
-  }
 
   void drawCar(){
     fill(255,0,0);
-    square(xCoord,yCoord,size);
+    square(xCoord,yCoord,carSize);
+    
+    xCoord += speed;
     
   }
   

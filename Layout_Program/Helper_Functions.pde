@@ -31,3 +31,17 @@ boolean validPersonPlacement(PVector p) {
     return false;
   }
 }
+
+boolean validCarPlacement(PVector p){
+  int colIdxL = xPositionToIndex(p.x);
+  int rowIdxT = yPositionToIndex(p.y);
+  int colIdxR = xPositionToIndex(p.x + carSize);
+  int rowIdxB = yPositionToIndex(p.y + carSize);
+  
+  if (layout.cityLayout[rowIdxT][colIdxL] == 3 && layout.cityLayout[rowIdxT][colIdxR] == 3 && layout.cityLayout[rowIdxB][colIdxL] == 3 && layout.cityLayout[rowIdxB][colIdxR] == 3 && p.x >= 3 && p.x + carSize <= width && p.y >= 3 && p.y + carSize <= height) {
+    return true;
+  } else {
+    return false;
+  }
+  
+}
