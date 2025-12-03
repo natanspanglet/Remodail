@@ -33,6 +33,15 @@ boolean validPlacement(PVector p, int check) {
 }
 
 void generatePopulation() {
+  if (layout == null || layout.cityLayout == null) {
+    println("Cannot generate population: layout not initialized.");
+    return;
+  }
+
+  //creates proper spacing of grid
+  rowSpacing = height / float(layout.numCityRows);
+  colSpacing = width  / float(layout.numCityCols);
+  
   population = new Person[populationNumber];
   for (int i = 0; i < population.length; i++) {
     boolean validPlacement = false;

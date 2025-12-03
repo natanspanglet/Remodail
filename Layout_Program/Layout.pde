@@ -130,7 +130,8 @@ class Layout {
 
   //Confirm a structure by entering it into the cityLayout 2-D array
   void putStructure() {
-    
+    //Makes sure that layout was declared and intialized
+    if (layout == null || layout.cityLayout == null) return;{
     //For deleting a tile on the layout grid
     if (this.structureType == -1) {
       // If the deleted tile IS the store
@@ -162,6 +163,7 @@ class Layout {
       // All other structure types can always be placed
       this.cityLayout[this.rowIndex][this.colIndex] = this.structureType;
     }
+    }
   }
 
 
@@ -169,6 +171,8 @@ class Layout {
   //This is done by drawing a square that is a lighter shade of the colour of the structure type
   //into the tile over which the user's mouse is hovering
   void preStructure() {
+    //Makes sure that layout was declared and intialized
+    if (layout == null || layout.cityLayout == null) return;{
     if (this.structureType == 0)  fill(0, 255, 0);
     else if (this.structureType == 1)  fill(255, 0, 0);
     else if (this.structureType == 2)  fill(255, 255, 0);
@@ -179,5 +183,6 @@ class Layout {
       this.rowIndex = int((mouseY - upBound) / this.cellHeight);
       rect(this.vertCoords[this.colIndex], this.horzCoords[this.rowIndex], this.cellWidth, this.cellHeight);
     }
+  }
   }
 }

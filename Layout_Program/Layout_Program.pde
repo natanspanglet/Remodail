@@ -41,6 +41,10 @@ void setup() {
   layout = new Layout(rows, cols); 
   createGUI();
   
+  //Makes sure the display pops up after submit button 
+  displayControl.setVisible(false);
+  populationNum.setEnabled(false);
+  
   screenType = "building";
   
   populationNumber = 50;

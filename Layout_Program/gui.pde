@@ -20,13 +20,52 @@ synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:userC
 
 public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlider:688321:
   cols = colSlider.getValueI();
-  //reupdating the layout
+
+  // recreate layout (because the columns of grid have changed)
   layout = new Layout(rows, cols);
+
+  //updating variables for layout
+  rowSpacing = height / float(layout.numCityRows);
+  colSpacing = width  / float(layout.numCityCols);
+
+  //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
+  population = null;
+
+  // Reset store-related values (makes it so that you can still place only one store)
+  layout.storeplaced = false;
+  layout.storeRow = -1;
+  layout.storeCol = -1;
+  layout.storeName = "";
+  
+  //If currently building the layout then the controls are visible
+  screenType = "building";     
+  userControl.setVisible(true);
+  displayControl.setVisible(false);
 } //_CODE_:colSlider:688321:
 
 public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837005:
   rows = rSlider.getValueI();
+
+  // recreate layout (because the columns of grid have changed)
   layout = new Layout(rows, cols);
+
+  //updating variables for layout
+  rowSpacing = height / float(layout.numCityRows);
+  colSpacing = width  / float(layout.numCityCols);
+
+  //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
+  population = null;
+
+  // Reset store-related values (makes it so that you can still place only one store)
+  layout.storeplaced = false;
+  layout.storeRow = -1;
+  layout.storeCol = -1;
+  layout.storeName = "";
+  
+  //If currently bulding the layout then the controls are visible
+  screenType = "build";     
+  userControl.setVisible(true);
+  displayControl.setVisible(false);
 } //_CODE_:rSlider:837005:
 
 public void buildingButton(GButton source, GEvent event) { //_CODE_:buildButton:634112:
@@ -59,6 +98,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
     generatePopulation();
     userControl.setVisible(false);
     displayControl.setVisible(true);
+    populationNum.setEnabled(true);
     layout.buttonClicked = false;
   }
   else{
@@ -85,8 +125,6 @@ public void NameofStore(GTextField source, GEvent event) { //_CODE_:storeName:45
 } //_CODE_:storeName:458681:
 
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
-  appc.background(230);
-  //displayControl.setVisible(false);
 } //_CODE_:displayControl:510305:
 
 public void popNum(GCustomSlider source, GEvent event) { //_CODE_:populationNum:459977:
