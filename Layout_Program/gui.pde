@@ -61,7 +61,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
     PVector p = new PVector(0, 0);
     while (validPlacement == false) {
       p = new PVector(int(random(0, width)), int(random(0, height)));
-      validPlacement = validPersonPlacement(p);
+      validPlacement = validPlacement(p, 0);
     }
     
     float angle = random(0, TWO_PI);

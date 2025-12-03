@@ -1,18 +1,19 @@
 class Car{
-  int xCoord, yCoord, speed;
+  PVector pos;
+  int speed;
   
-  Car(int s, int x, int y){
+  Car(int s, PVector p){
     this.speed = s;
-    this.xCoord = x;
-    this.yCoord = y;
+    this.pos = p;
   }
   
+  void move() {
+    this.pos.x += this.speed;
+  }
 
   void drawCar(){
     fill(255,0,0);
-    square(xCoord,yCoord,carSize);
-    
-    xCoord += speed;
+    square(this.pos.x, this.pos.y, carSize);
     
   }
   

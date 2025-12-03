@@ -43,7 +43,7 @@ class Person {
       }
       
       this.pos.add(this.vel);
-      if (validPersonPlacement(pos) == false) {
+      if (validPlacement(pos, 0) == false) {
         this.pos.sub(this.vel);
       }
     }
