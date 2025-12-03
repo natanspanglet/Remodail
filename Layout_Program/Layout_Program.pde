@@ -37,29 +37,31 @@ int cols = 12;
 //Screen size will be 800 by 600
 void setup() {
   size(800,600);
-  createGUI();
   layout = new Layout(rows, cols); 
+  createGUI();
   
-  screenType = "display";
+  screenType = "building";
   
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
   carSize = height / float(rows) - 20;
   
-  population = new Person[50];
-  for (int i = 0; i < population.length; i++) {
-    boolean validPlacement = false;
-    PVector p = new PVector(0, 0);
-    while (validPlacement == false) {
-      p = new PVector(int(random(0, width)), int(random(0, height)));
-      validPlacement = validPersonPlacement(p);
-    }
+  
+  //IF I AM CORRECT THIS DOES NOT NEED TO BE CALLED HERE ANYMORE, IF SOMEONE CAN CONFIRM DELETE EVERYTHING COMMENTED
+  //population = new Person[50];
+  //for (int i = 0; i < population.length; i++) {
+  //  boolean validPlacement = false;
+  //  PVector p = new PVector(0, 0);
+  //  while (validPlacement == false) {
+  //    p = new PVector(int(random(0, width)), int(random(0, height)));
+  //    validPlacement = validPersonPlacement(p);
+  //  }
     
-    float angle = random(0, TWO_PI);
-    float speed = random(1, 5);
-    PVector v = new PVector(speed*cos(angle), speed*sin(angle));
-    population[i] = new Person(p, v, speed, 10, 10);
-  }
+  //  float angle = random(0, TWO_PI);
+  //  float speed = random(1, 5);
+  //  PVector v = new PVector(speed*cos(angle), speed*sin(angle));
+  //  population[i] = new Person(p, v, speed, 10, 10);
+  //}
   
   PFont f1 = createFont("Arial", 36);
   textFont(f1);
@@ -72,9 +74,7 @@ void setup() {
 //Draw the grid, its features, and the preStructure() function of the Layout
 //(the preStructure() function will take care of whether to draw the lighter-shaded square)
 void draw() {
-  println(rows, cols);  
-  
-  
+
   layout.drawGrid();
   if(layout.buttonClicked == true) {
     layout.preStructure();
