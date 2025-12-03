@@ -14,7 +14,6 @@ class Car{
   void drawCar(){
     fill(255,0,0);
     square(this.pos.x, this.pos.y, carSize);
-    
   }
   
 }
