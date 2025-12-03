@@ -138,14 +138,16 @@ class Layout {
         this.storeplaced = false;
         this.storeRow = -1;
         this.storeCol = -1;
-        this.storeName = null;   // optionally clear name
+        this.storeName = "";   
       }
 
       // Reset tile
       this.cityLayout[this.rowIndex][this.colIndex] = 0;
       return;
     }
-
+    
+    
+    //Can only place the store once 
     if (this.structureType == 1) {
       if (this.storeplaced == false) {
         this.cityLayout[this.rowIndex][this.colIndex] = 1;
