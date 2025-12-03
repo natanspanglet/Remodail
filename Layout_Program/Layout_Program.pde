@@ -46,9 +46,7 @@ void setup() {
   populationNum.setEnabled(false);
   
   screenType = "building";
-  
-  populationNumber = 50;
-  
+    
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
   carSize = height / float(rows) - 20;
