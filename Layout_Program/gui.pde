@@ -58,6 +58,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
     screenType = "display";
     generatePopulation();
     userControl.setVisible(false);
+    layout.buttonClicked = false;
   }
   else{
     println("No store placed.");
