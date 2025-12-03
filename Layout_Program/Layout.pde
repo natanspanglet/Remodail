@@ -41,7 +41,7 @@ class Layout {
     this.structureType = 5;
     //Boolean makes sure that the store can only be placed once
     this.storeplaced = false;
-    this.storeName = null;
+    this.storeName = "";
 
     //Initialize coordinates for individual cells (in effect)
     this.horzCoords = new float[this.numCityRows + 1];

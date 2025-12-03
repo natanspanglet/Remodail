@@ -13,12 +13,24 @@ class Person {
     
     this.buyUrge = 0;
     this.skinTone = pickRandomSkinTone();
-    this.spottedAdvertisement = false;
+    this.spottedAdvertisement = true;
   }
   
   color pickRandomSkinTone() {
     int randomSkinToneIdx = int(random(0, skinTones.length));
     return skinTones[ randomSkinToneIdx ];
+  }
+  
+  boolean checkCorners() {
+    int colIdxL = xPositionToIndex(this.pos.x);
+    int rowIdxT = yPositionToIndex(this.pos.y);
+    int colIdxR = xPositionToIndex(this.pos.x + personWidth);
+    int rowIdxB = yPositionToIndex(this.pos.y + personWidth);
+    if (colIdxL == colIdxR && rowIdxT == rowIdxB) {
+      return true;
+    } else {
+      return false;
+    }
   }
   
   void drawMe() {
@@ -27,9 +39,23 @@ class Person {
     square(this.pos.x, this.pos.y, 20);
   }
   
-  void move() {
-    if (spottedAdvertisement == true) {
+  void goToSquare() {
+    int colIdxL = xPositionToIndex(this.pos.x);
+    int rowIdxT = yPositionToIndex(this.pos.y);
+    PVector targetPos = new PVector(colIdxL * colSpacing, rowIdxT * rowSpacing);
     
+    PVector directionVector = targetPos.sub(this.pos);
+    float angle = directionVector.heading();
+    this.vel = new PVector(this.speed * cos(angle), this.speed*sin(angle));
+  }
+  
+  void move() {
+    if (this.spottedAdvertisement == true) {
+      if (this.checkCorners() == false) {
+        goToSquare();
+        this.pos.add(this.vel);
+      }
+      
     }
     
     if (headingToStore == true) {
