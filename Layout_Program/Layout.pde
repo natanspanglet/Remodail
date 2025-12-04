@@ -95,12 +95,10 @@ class Layout {
           rect(this.vertCoords[j], this.horzCoords[i], this.cellWidth, this.cellHeight);
 
 if (this.cityLayout[i][j] == 1 && this.storeplaced && this.storeName != null) {
-    fill(255);
+    fill(0);
     textSize(min(cellWidth, cellHeight)/3);
     textAlign(CENTER, CENTER);
-    text(this.storeName,
-         this.vertCoords[j] + this.cellWidth/2,
-         this.horzCoords[i] + this.cellHeight/2);
+    text(this.storeName, this.vertCoords[j] + this.cellWidth/2, this.horzCoords[i] - this.cellHeight/6 );
 }
 
 
