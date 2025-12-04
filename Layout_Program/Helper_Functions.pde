@@ -17,6 +17,7 @@ int yPositionToIndex(float y) {
   }
   
   return layout.numCityRows-1;
+  
 }
 
 boolean validPlacement(PVector p, int check) {
@@ -50,6 +51,27 @@ void generatePopulation() {
   }
 }
 
+String pythonStylePath(ArrayList<int[]> path) {
+  StringBuilder sb = new StringBuilder();
+  sb.append("[");
+  
+  for (int i = 0; i < path.size(); i++) {
+    int[] arr = path.get(i);
+    
+    sb.append("[");
+    for (int j = 0; j < arr.length; j++) {
+      sb.append(arr[j]);
+      if (j < arr.length - 1) sb.append(", ");
+    }
+    sb.append("]");
+    
+    if (i < path.size() - 1) sb.append(", ");
+  }
+  
+  sb.append("]");
+  return sb.toString();
+}
+
 ArrayList<int[]> deepcopy(ArrayList<int[]> src) {
   ArrayList<int[]> copiedArray = new ArrayList();
   for (int[] element: src) {
@@ -58,6 +80,7 @@ ArrayList<int[]> deepcopy(ArrayList<int[]> src) {
   
   return copiedArray;
 }
+
 
 //void generateCars(){
 // cars = new Car[carNum];

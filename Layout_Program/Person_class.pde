@@ -4,8 +4,6 @@ class Person {
   color skinTone;
   boolean spottedAdvertisement, headingToStore;
   ArrayList<int[]> pathToStore;
-  int[] nextPathSquare;
-  int currentPathIdx, nextPathRow, nextPathCol;
   
   Person(PVector p, PVector v, float s, float vR, float m){
     this.pos = p;
@@ -18,7 +16,6 @@ class Person {
     this.skinTone = pickRandomSkinTone();
     this.spottedAdvertisement = true;
     this.headingToStore = false;
-    this.currentPathIdx = 1;
   }
   
   color pickRandomSkinTone() {
@@ -26,12 +23,12 @@ class Person {
     return skinTones[ randomSkinToneIdx ];
   }
   
-  boolean checkInSquare(int squareRow, int squareCol) {
+  boolean checkCorners() {
     int colIdxL = xPositionToIndex(this.pos.x);
     int rowIdxT = yPositionToIndex(this.pos.y);
     int colIdxR = xPositionToIndex(this.pos.x + personWidth);
     int rowIdxB = yPositionToIndex(this.pos.y + personWidth);
-    if (colIdxL == colIdxR && rowIdxT == rowIdxB && colIdxL == squareCol && rowIdxT == squareRow) {
+    if (colIdxL == colIdxR && rowIdxT == rowIdxB) {
       return true;
     } else {
       return false;
@@ -45,9 +42,7 @@ class Person {
   }
   
   void goToSquare(int rowIdx, int colIdx) {
-    float targetX = (colIdx + 0.5) * colSpacing;
-    float targetY = (rowIdx + 0.5) * rowSpacing;
-    PVector targetPos = new PVector(targetX, targetY);
+    PVector targetPos = new PVector(colIdx * colSpacing, rowIdx * rowSpacing);
     
     PVector directionVector = targetPos.sub(this.pos);
     float angle = directionVector.heading();
@@ -110,9 +105,9 @@ class Person {
   
   void move() {
     if (this.spottedAdvertisement == true) {
-      int colIdxL = xPositionToIndex(this.pos.x);
-      int rowIdxT = yPositionToIndex(this.pos.y);
-      if (this.checkInSquare(rowIdxT, colIdxL) == false) {
+      if (this.checkCorners() == false) {
+        int colIdxL = xPositionToIndex(this.pos.x);
+        int rowIdxT = yPositionToIndex(this.pos.y);
         goToSquare(rowIdxT, colIdxL);
         this.pos.add(this.vel);
       } else {
@@ -120,32 +115,12 @@ class Person {
         this.headingToStore = true;
         
         this.pathToStore = this.findPathToStore();
-        
-        if (this.pathToStore.size() > 0) {
-          this.nextPathSquare = this.pathToStore.get(currentPathIdx);
-          this.nextPathRow = this.nextPathSquare[0];
-          this.nextPathCol = this.nextPathSquare[1];
-        } else {
-          this.nextPathRow = rowIdxT;
-          this.nextPathCol = colIdxL;
-        }
       }
       
     }
     
     if (headingToStore == true) {
-      if (checkInSquare(this.nextPathRow, this.nextPathCol) == false) {
-        goToSquare(this.nextPathRow, this.nextPathCol);
-        this.pos.add(this.vel);
-      } else {
-        this.currentPathIdx++;
-        
-        if (this.currentPathIdx < this.pathToStore.size()) {
-          this.nextPathSquare = this.pathToStore.get(currentPathIdx);
-          this.nextPathRow = this.nextPathSquare[0];
-          this.nextPathCol = this.nextPathSquare[1];
-        }
-      }
+      println(pythonStylePath(this.pathToStore));
     }
     
     if (!spottedAdvertisement && !headingToStore) {
