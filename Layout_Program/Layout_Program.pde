@@ -35,6 +35,10 @@ color[] skinTones = {
 
 int rows =7;
 int cols = 12;
+
+Time[] theTimes = new Time[];
+String[] mostHolidays;
+
 //Screen size will be 800 by 600
 void setup() {
   size(800,600);
