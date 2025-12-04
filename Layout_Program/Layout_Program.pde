@@ -39,6 +39,8 @@ int cols = 12;
 Time[] theTimes = new Time[1];
 String[] mostHolidays;
 
+int[][] adjDirection = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
 //Screen size will be 800 by 600
 void setup() {
   size(800,600);
@@ -49,7 +51,7 @@ void setup() {
   displayControl.setVisible(false);
   populationNum.setEnabled(true);
   
-  populationNumber = 50;
+  populationNumber = 1;
   
   screenType = "building";
   
@@ -73,7 +75,6 @@ void draw() {
   if(layout.buttonClicked == true) {
     layout.preStructure();
   }
-
 
   if (screenType.equals("display")) {
     theTimes[0].display();

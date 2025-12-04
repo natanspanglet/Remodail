@@ -50,6 +50,15 @@ void generatePopulation() {
   }
 }
 
+ArrayList<int[]> deepcopy(ArrayList<int[]> src) {
+  ArrayList<int[]> copiedArray = new ArrayList();
+  for (int[] element: src) {
+    copiedArray.add(element);
+  }
+  
+  return copiedArray;
+}
+
 //void generateCars(){
 // cars = new Car[carNum];
  
