@@ -47,7 +47,7 @@ void setup() {
   
   //Makes sure the display pops up after submit button 
   displayControl.setVisible(false);
-  populationNum.setEnabled(false);
+  populationNum.setEnabled(true);
   
   populationNumber = 50;
   

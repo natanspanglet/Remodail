@@ -94,7 +94,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
     generatePopulation();
     userControl.setVisible(false);
     displayControl.setVisible(true);
-    populationNum.setEnabled(false);
+    populationNum.setEnabled(true);
     layout.buttonClicked = false;
   }
   else{
@@ -196,8 +196,8 @@ public void createGUI(){
   storeLabel.setText("What is the name of your store?");
   storeLabel.setOpaque(false);
   populationNum = new GCustomSlider(userControl, 161, 147, 100, 40, "grey_blue");
-  populationNum.setLimits(0.5, 0.0, 1.0);
-  populationNum.setNumberFormat(G4P.DECIMAL, 2);
+  populationNum.setLimits(20, 20, 100);
+  populationNum.setNumberFormat(G4P.INTEGER, 0);
   populationNum.setOpaque(false);
   populationNum.addEventHandler(this, "populationSlider");
   popLabel = new GLabel(userControl, 160, 124, 137, 20);
