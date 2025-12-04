@@ -94,7 +94,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
     generatePopulation();
     userControl.setVisible(false);
     displayControl.setVisible(true);
-    populationNum.setEnabled(true);
+    populationNum.setEnabled(false);
     layout.buttonClicked = false;
   }
   else{
@@ -120,13 +120,13 @@ public void NameofStore(GTextField source, GEvent event) { //_CODE_:storeName:45
   }
 } //_CODE_:storeName:458681:
 
+public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:populationNum:692818:
+  populationNumber = populationNum.getValueI();
+  println("populationNum - GCustomSlider >> GEvent." + event + " @ " + millis());
+} //_CODE_:populationNum:692818:
+
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
 } //_CODE_:displayControl:510305:
-
-public void popNum(GCustomSlider source, GEvent event) { //_CODE_:populationNum:459977:
-  populationNumber = populationNum.getValueI();
-  generatePopulation();
-} //_CODE_:populationNum:459977:
 
 
 
@@ -137,84 +137,76 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
-  userControl = GWindow.getWindow(this, "userControls", 0, 0, 250, 250, JAVA2D);
+  userControl = GWindow.getWindow(this, "userControls", 0, 0, 300, 350, JAVA2D);
   userControl.noLoop();
   userControl.setActionOnClose(G4P.KEEP_OPEN);
   userControl.addDrawHandler(this, "win_draw1");
-  usercontrols = new GLabel(userControl, 52, 3, 122, 20);
+  usercontrols = new GLabel(userControl, 79, 5, 122, 20);
   usercontrols.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   usercontrols.setText("User Controls");
   usercontrols.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
   usercontrols.setOpaque(false);
-  colSlider = new GCustomSlider(userControl, 8, 45, 100, 40, "red_yellow18px");
+  colSlider = new GCustomSlider(userControl, 14, 72, 100, 40, "red_yellow18px");
   colSlider.setLimits(5, 5, 20);
   colSlider.setNumberFormat(G4P.INTEGER, 0);
   colSlider.setLocalColorScheme(GCScheme.RED_SCHEME);
   colSlider.setOpaque(false);
   colSlider.addEventHandler(this, "columnsSlider");
-  collabel = new GLabel(userControl, -5, 28, 124, 20);
+  collabel = new GLabel(userControl, -1, 41, 124, 20);
   collabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   collabel.setText("Adjust Column #");
   collabel.setLocalColorScheme(GCScheme.RED_SCHEME);
   collabel.setOpaque(false);
-  rSlider = new GCustomSlider(userControl, 122, 48, 100, 40, "blue18px");
+  rSlider = new GCustomSlider(userControl, 161, 71, 100, 40, "blue18px");
   rSlider.setLimits(5, 5, 20);
   rSlider.setNumberFormat(G4P.INTEGER, 0);
   rSlider.setOpaque(false);
   rSlider.addEventHandler(this, "rowSlider");
-  rowlabel = new GLabel(userControl, 131, 29, 80, 20);
+  rowlabel = new GLabel(userControl, 163, 41, 80, 20);
   rowlabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   rowlabel.setText("Adjust Row #");
   rowlabel.setOpaque(false);
-  buildButton = new GButton(userControl, 12, 97, 80, 30);
+  buildButton = new GButton(userControl, 14, 129, 80, 30);
   buildButton.setText("Building");
   buildButton.addEventHandler(this, "buildingButton");
-  busButton = new GButton(userControl, 11, 136, 80, 30);
+  busButton = new GButton(userControl, 13, 168, 80, 30);
   busButton.setText("Bus Stop");
   busButton.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   busButton.addEventHandler(this, "busstopButton");
-  storeButton = new GButton(userControl, 11, 175, 80, 30);
+  storeButton = new GButton(userControl, 13, 211, 80, 30);
   storeButton.setText("My Store ");
   storeButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   storeButton.addEventHandler(this, "mystoreButton");
-  roadButton = new GButton(userControl, 10, 212, 80, 30);
+  roadButton = new GButton(userControl, 13, 254, 80, 30);
   roadButton.setText("Road");
   roadButton.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
   roadButton.addEventHandler(this, "roadsButton");
-  submitButton = new GButton(userControl, 137, 211, 80, 30);
+  submitButton = new GButton(userControl, 153, 312, 80, 30);
   submitButton.setText("SUBMIT");
   submitButton.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   submitButton.addEventHandler(this, "submit");
-  deleteButton = new GButton(userControl, 136, 173, 80, 30);
+  deleteButton = new GButton(userControl, 60, 312, 80, 30);
   deleteButton.setText("DELETE");
-  deleteButton.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  deleteButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   deleteButton.addEventHandler(this, "delete");
-  storeName = new GTextField(userControl, 113, 130, 120, 30, G4P.SCROLLBARS_NONE);
+  storeName = new GTextField(userControl, 160, 255, 120, 30, G4P.SCROLLBARS_NONE);
   storeName.setOpaque(true);
   storeName.addEventHandler(this, "NameofStore");
-  storeLabel = new GLabel(userControl, 109, 87, 126, 40);
-  storeLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  storeLabel = new GLabel(userControl, 160, 205, 126, 40);
   storeLabel.setText("What is the name of your store?");
   storeLabel.setOpaque(false);
+  populationNum = new GCustomSlider(userControl, 161, 147, 100, 40, "grey_blue");
+  populationNum.setLimits(0.5, 0.0, 1.0);
+  populationNum.setNumberFormat(G4P.DECIMAL, 2);
+  populationNum.setOpaque(false);
+  populationNum.addEventHandler(this, "populationSlider");
+  popLabel = new GLabel(userControl, 160, 124, 137, 20);
+  popLabel.setText("Change Population Size");
+  popLabel.setOpaque(false);
   displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 150, 200, JAVA2D);
   displayControl.noLoop();
   displayControl.setActionOnClose(G4P.KEEP_OPEN);
   displayControl.addDrawHandler(this, "displayControls");
-  windowName = new GLabel(displayControl, 17, 5, 111, 20);
-  windowName.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  windowName.setText("Display Controls");
-  windowName.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
-  windowName.setOpaque(false);
-  populationNum = new GCustomSlider(displayControl, 3, 52, 100, 40, "grey_blue");
-  populationNum.setLimits(20, 20, 100);
-  populationNum.setNumberFormat(G4P.INTEGER, 0);
-  populationNum.setLocalColorScheme(GCScheme.CYAN_SCHEME);
-  populationNum.setOpaque(false);
-  populationNum.addEventHandler(this, "popNum");
-  popLabel = new GLabel(displayControl, 2, 22, 157, 40);
-  popLabel.setText("Change Population Size");
-  popLabel.setLocalColorScheme(GCScheme.CYAN_SCHEME);
-  popLabel.setOpaque(false);
   userControl.loop();
   displayControl.loop();
 }
@@ -235,7 +227,6 @@ GButton submitButton;
 GButton deleteButton; 
 GTextField storeName; 
 GLabel storeLabel; 
-GWindow displayControl;
-GLabel windowName; 
 GCustomSlider populationNum; 
 GLabel popLabel; 
+GWindow displayControl;
