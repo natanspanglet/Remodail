@@ -39,10 +39,8 @@ class Person {
     square(this.pos.x, this.pos.y, 20);
   }
   
-  void goToSquare() {
-    int colIdxL = xPositionToIndex(this.pos.x);
-    int rowIdxT = yPositionToIndex(this.pos.y);
-    PVector targetPos = new PVector(colIdxL * colSpacing, rowIdxT * rowSpacing);
+  void goToSquare(int rowIdx, int colIdx) {
+    PVector targetPos = new PVector(colIdx * colSpacing, rowIdx * rowSpacing);
     
     PVector directionVector = targetPos.sub(this.pos);
     float angle = directionVector.heading();
@@ -52,7 +50,9 @@ class Person {
   void move() {
     if (this.spottedAdvertisement == true) {
       if (this.checkCorners() == false) {
-        goToSquare();
+        int colIdxL = xPositionToIndex(this.pos.x);
+        int rowIdxT = yPositionToIndex(this.pos.y);
+        goToSquare(rowIdxT, colIdxL);
         this.pos.add(this.vel);
       }
       

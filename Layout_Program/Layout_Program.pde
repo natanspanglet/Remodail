@@ -36,7 +36,7 @@ color[] skinTones = {
 int rows =7;
 int cols = 12;
 
-Time[] theTimes = new Time[];
+Time[] theTimes = new Time[1];
 String[] mostHolidays;
 
 //Screen size will be 800 by 600
@@ -49,7 +49,13 @@ void setup() {
   displayControl.setVisible(false);
   populationNum.setEnabled(false);
   
+  populationNumber = 50;
+  
   screenType = "building";
+  
+  mostHolidays = loadStrings("holidayData.txt");
+  Time theTime = new Time("10:00", 5, 4, 12, 2025);
+  theTimes[0] = theTime;
     
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
@@ -70,6 +76,8 @@ void draw() {
 
 
   if (screenType.equals("display")) {
+    theTimes[0].display();
+    theTimes[0].update();
     for(Person p: population) {
       p.drawMe();
       p.move();
