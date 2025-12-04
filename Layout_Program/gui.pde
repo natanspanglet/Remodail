@@ -195,6 +195,7 @@ public void createGUI(){
   storeLabel.setText("What is the name of your store?");
   storeLabel.setOpaque(false);
   populationNum = new GCustomSlider(userControl, 161, 147, 100, 40, "grey_blue");
+  populationNum.setShowValue(true);
   populationNum.setLimits(20, 20, 100);
   populationNum.setNumberFormat(G4P.INTEGER, 0);
   populationNum.setOpaque(false);
