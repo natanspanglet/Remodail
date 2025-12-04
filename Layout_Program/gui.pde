@@ -24,10 +24,6 @@ public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlid
   // recreate layout (because the columns of grid have changed)
   layout = new Layout(rows, cols);
 
-  //updating variables for layout
-  rowSpacing = height / float(layout.numCityRows);
-  colSpacing = width  / float(layout.numCityCols);
-
   //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
   population = null;
 
@@ -37,6 +33,8 @@ public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlid
   layout.storeCol = -1;
   layout.storeName = "";
   
+  layout.structureType = 5;  // Reset mode after recreation
+//population = null;   
   //If currently building the layout then the controls are visible
   screenType = "building";     
   userControl.setVisible(true);
@@ -49,10 +47,6 @@ public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837
   // recreate layout (because the columns of grid have changed)
   layout = new Layout(rows, cols);
 
-  //updating variables for layout
-  rowSpacing = height / float(layout.numCityRows);
-  colSpacing = width  / float(layout.numCityCols);
-
   //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
   population = null;
 
@@ -62,6 +56,8 @@ public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837
   layout.storeCol = -1;
   layout.storeName = "";
   
+  layout.structureType = 5;  // Reset mode after recreation
+//population = null;   
   //If currently bulding the layout then the controls are visible
   screenType = "build";     
   userControl.setVisible(true);

@@ -94,15 +94,16 @@ class Layout {
           fill(255, 0, 0);
           rect(this.vertCoords[j], this.horzCoords[i], this.cellWidth, this.cellHeight);
 
-          // Draw store label
-          if (i == this.storeRow && j == this.storeCol && this.storeName != null) { 
-            fill(255);
-            textSize(min(cellWidth, cellHeight)/3);
-            textAlign(CENTER, CENTER);
-            text(this.storeName,
-              this.vertCoords[j] + this.cellWidth/2,
-              this.horzCoords[i] + this.cellHeight/2);
-          }
+if (this.cityLayout[i][j] == 1 && this.storeplaced && this.storeName != null) {
+    fill(255);
+    textSize(min(cellWidth, cellHeight)/3);
+    textAlign(CENTER, CENTER);
+    text(this.storeName,
+         this.vertCoords[j] + this.cellWidth/2,
+         this.horzCoords[i] + this.cellHeight/2);
+}
+
+
 
           continue;  // Skip default rect drawing
         }
@@ -130,8 +131,12 @@ class Layout {
 
   //Confirm a structure by entering it into the cityLayout 2-D array
   void putStructure() {
-    //Makes sure that layout was declared and intialized
-    if (layout == null || layout.cityLayout == null) return;{
+  // Make sure cityLayout is initialized
+  if (this.cityLayout == null) return;
+  
+  // Only update if rowIndex and colIndex are valid
+  if(rowIndex >= 0 && rowIndex < numCityRows && colIndex >= 0 && colIndex < numCityCols) {
+    
     //For deleting a tile on the layout grid
     if (this.structureType == -1) {
       // If the deleted tile IS the store
@@ -166,23 +171,37 @@ class Layout {
     }
   }
 
-
   //This is a function that allows the user to see where their mouse is before they click
   //This is done by drawing a square that is a lighter shade of the colour of the structure type
   //into the tile over which the user's mouse is hovering
-  void preStructure() {
-    //Makes sure that layout was declared and intialized
-    if (layout == null || layout.cityLayout == null) return;{
-    if (this.structureType == 0)  fill(0, 255, 0);
-    else if (this.structureType == 1)  fill(255, 0, 0);
-    else if (this.structureType == 2)  fill(255, 255, 0);
-    else if (this.structureType == 3)  fill(127, 127, 127);
-    else  fill(0, 0, 0);
-    if (mouseX >= this.leftBound && mouseX < this.rightBound && mouseY >= this.upBound & mouseY < this.lowBound) {
-      this.colIndex = int((mouseX - leftBound) / this.cellWidth);
-      this.rowIndex = int((mouseY - upBound) / this.cellHeight);
-      rect(this.vertCoords[this.colIndex], this.horzCoords[this.rowIndex], this.cellWidth, this.cellHeight);
+void preStructure() {
+  // Make sure cityLayout and coords exist
+  if (this.cityLayout == null || this.vertCoords == null || this.horzCoords == null) return;
+
+  // Set color for the preview
+  if (this.structureType == 0) fill(0, 255, 0);
+  else if (this.structureType == 1) fill(255, 0, 0);
+  else if (this.structureType == 2) fill(255, 255, 0);
+  else if (this.structureType == 3) fill(127, 127, 127);
+  else fill(0, 0, 0);
+
+  // Only draw if mouse is inside the grid
+  if (mouseX >= this.leftBound && mouseX < this.rightBound &&
+      mouseY >= this.upBound && mouseY < this.lowBound) {
+
+    int cIndex = int((mouseX - this.leftBound) / this.cellWidth);
+    int rIndex = int((mouseY - this.upBound) / this.cellHeight);
+
+    // Bounds safety check
+    if (rIndex >= 0 && rIndex < this.numCityRows &&
+        cIndex >= 0 && cIndex < this.numCityCols) {
+      rect(this.vertCoords[cIndex], 
+           this.horzCoords[rIndex], 
+           this.cellWidth, this.cellHeight);
+      // Update current indices
+      this.colIndex = cIndex;
+      this.rowIndex = rIndex;
     }
   }
-  }
+}
 }

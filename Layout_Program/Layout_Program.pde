@@ -59,7 +59,6 @@ void setup() {
 //Draw the grid, its features, and the preStructure() function of the Layout
 //(the preStructure() function will take care of whether to draw the lighter-shaded square)
 void draw() {
-
   layout.drawGrid();
   if(layout.buttonClicked == true) {
     layout.preStructure();
