@@ -94,7 +94,6 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
     generatePopulation();
     userControl.setVisible(false);
     displayControl.setVisible(true);
-    populationNum.setEnabled(true);
     layout.buttonClicked = false;
   }
   else{
