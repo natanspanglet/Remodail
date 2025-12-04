@@ -51,7 +51,7 @@ void setup() {
   displayControl.setVisible(false);
   populationNum.setEnabled(true);
   
-  populationNumber = 1;
+  populationNumber = 20;
   
   screenType = "building";
   
