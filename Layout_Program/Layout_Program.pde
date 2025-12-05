@@ -67,7 +67,7 @@ void setup() {
   
   PFont f1 = createFont("Arial", 36);
   textFont(f1);
-  background(0, 255, 0);
+  background(50, 196, 109);
 }
 
 //Draw the grid, its features, and the preStructure() function of the Layout

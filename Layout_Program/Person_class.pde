@@ -120,6 +120,7 @@ class Person {
         goToSquare(rowIdxT, colIdxL);
         this.pos.add(this.vel);
       } else {
+        println(layout.storeRow, layout.storeCol);
         this.spottedAdvertisement = false;
         this.headingToStore = true;
         

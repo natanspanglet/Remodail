@@ -43,7 +43,7 @@ void generatePopulation() {
     }
     
     float angle = random(0, TWO_PI);
-    float speed = random(1, 5);
+    float speed = random(1.2, 5);
     PVector v = new PVector(speed*cos(angle), speed*sin(angle));
     population[i] = new Person(p, v, speed, 10, 10);
   }

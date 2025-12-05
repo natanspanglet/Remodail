@@ -85,7 +85,7 @@ class Layout {
       for (int j = 0; j < this.numCityCols; j ++) {
         //Default Colour/Walkable Area
         if (this.cityLayout[i][j] == 0) {
-          fill(0, 255, 0);
+          fill(50, 196, 109);
         }
 
         //Store
