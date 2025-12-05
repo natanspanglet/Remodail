@@ -200,4 +200,15 @@ void preStructure() {
     }
   }
 }
+
+boolean hasEmptyCell(){
+  for (int r=0; r<numCityRows; r++){
+    for(int c=0; c<numCityCols; c++){
+     if(cityLayout[r][c] == 0){
+      return true;  
+     }
+    }
+  }
+  return false;
+}
 }

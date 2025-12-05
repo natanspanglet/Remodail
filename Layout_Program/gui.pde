@@ -89,6 +89,12 @@ public void roadsButton(GButton source, GEvent event) { //_CODE_:roadButton:7088
 } //_CODE_:roadButton:708872:
 
 public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
+  
+  if (layout.hasEmptyCell() == false){
+   println("You can not fill the whole grid, how will people walk to your store????"); 
+  }
+  
+  else{
   if (layout.storeplaced) {
     screenType = "display";
     generatePopulation();
@@ -98,6 +104,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
   }
   else{
     println("No store placed.");
+  }
   }
 } //_CODE_:submitButton:798579:
 
@@ -126,6 +133,15 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
 } //_CODE_:displayControl:510305:
+
+public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305:
+  println("weatherType - GDropList >> GEvent." + event + " @ " + millis());
+} //_CODE_:weatherType:423305:
+
+public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
+  println("timer1 - GTimer >> an event occured @ " + millis());
+} //_CODE_:timer1:500679:
+
 
 
 // Create all the GUI controls. 
@@ -206,6 +222,23 @@ public void createGUI(){
   displayControl.noLoop();
   displayControl.setActionOnClose(G4P.KEEP_OPEN);
   displayControl.addDrawHandler(this, "displayControls");
+  displayLabel = new GLabel(displayControl, 15, 4, 118, 20);
+  displayLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  displayLabel.setText("Display Controls");
+  displayLabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  displayLabel.setOpaque(false);
+  weatherQ = new GLabel(displayControl, -1, 27, 146, 50);
+  weatherQ.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  weatherQ.setText("What will the weather be like in the city?");
+  weatherQ.setOpaque(false);
+  togGroup1 = new GToggleGroup();
+  WeatherType = new GToggleGroup();
+  togGroup2 = new GToggleGroup();
+  togGroup3 = new GToggleGroup();
+  weatherType = new GDropList(displayControl, 27, 71, 90, 80, 3, 10);
+  weatherType.setItems(loadStrings("list_423305"), 0);
+  weatherType.addEventHandler(this, "weatherPick");
+  timer1 = new GTimer(this, this, "timer1_Action1", 1000);
   userControl.loop();
   displayControl.loop();
 }
@@ -229,3 +262,11 @@ GLabel storeLabel;
 GCustomSlider populationNum; 
 GLabel popLabel; 
 GWindow displayControl;
+GLabel displayLabel; 
+GLabel weatherQ; 
+GToggleGroup togGroup1; 
+GToggleGroup WeatherType; 
+GToggleGroup togGroup2; 
+GToggleGroup togGroup3; 
+GDropList weatherType; 
+GTimer timer1; 
