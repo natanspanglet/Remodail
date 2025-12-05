@@ -34,7 +34,7 @@ public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlid
   layout.storeName = "";
   
   layout.structureType = 5;  // Reset mode after recreation
-//population = null;   
+
   //If currently building the layout then the controls are visible
   screenType = "building";     
   userControl.setVisible(true);
@@ -57,9 +57,9 @@ public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837
   layout.storeName = "";
   
   layout.structureType = 5;  // Reset mode after recreation
-//population = null;   
+
   //If currently bulding the layout then the controls are visible
-  screenType = "build";     
+  screenType = "building";     
   userControl.setVisible(true);
   displayControl.setVisible(false);
 } //_CODE_:rSlider:837005:
@@ -126,7 +126,6 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
 } //_CODE_:displayControl:510305:
-
 
 
 // Create all the GUI controls. 

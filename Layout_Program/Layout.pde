@@ -101,8 +101,6 @@ if (this.cityLayout[i][j] == 1 && this.storeplaced && this.storeName != null) {
     text(this.storeName, this.vertCoords[j] + this.cellWidth/2, this.horzCoords[i] - this.cellHeight/6 );
 }
 
-
-
           continue;  // Skip default rect drawing
         }
 
