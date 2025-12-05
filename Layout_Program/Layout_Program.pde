@@ -7,8 +7,10 @@ float rowSpacing;
 float colSpacing;
 
 String screenType;
-
 float carSize;
+
+Weather weather;
+boolean weatherChosen;
 
 Person[] population;
 int populationNumber;
@@ -79,9 +81,14 @@ void draw() {
   if (screenType.equals("display")) {
     theTimes[0].display();
     theTimes[0].update();
+    
     for(Person p: population) {
       p.drawMe();
       p.move();
+    }
+    
+    if (weatherChosen){
+      weather.update();
     }
   }
 }

@@ -134,7 +134,18 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
 } //_CODE_:displayControl:510305:
 
-public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305:
+public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305: 
+  int rowNum = source.getSelectedIndex();
+  
+  weatherChosen = true;
+   if (rowNum == 0)
+     weather = new Weather("sunny");
+   else if (rowNum == 1)
+     weather = new Weather("raining");
+   else if (rowNum == 2)
+     weather = new Weather("snowing");
+   else
+     println("error?");
   println("weatherType - GDropList >> GEvent." + event + " @ " + millis());
 } //_CODE_:weatherType:423305:
 

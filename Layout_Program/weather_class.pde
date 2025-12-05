@@ -27,6 +27,7 @@ class Weather {
 
   void drawParticles(int r, int g, int b) {
     fill(r, g, b);
+    noStroke();
     for (PVector p : particles) {
       square(p.x, p.y, 5);
     }
