@@ -1,36 +1,41 @@
 class Person {
   PVector pos, vel;
-  float visionRadius, money, buyUrge, speed;
+  float visionRadius, money, buyUrge, speed, personAngle;
   color skinTone;
   boolean spottedAdvertisement, headingToStore;
   ArrayList<int[]> pathToStore;
   int[] nextPathSquare;
   int currentPathIdx, nextPathRow, nextPathCol;
   
-  Person(PVector p, PVector v, float s, float vR, float m){
+  Person(PVector p, PVector v, float s, float vR, float m, float pA){
     this.pos = p;
     this.vel = v;
     this.speed = s;
     this.visionRadius = vR;
     this.money = m;
+    this.personAngle = pA;
     
     this.buyUrge = 0;
     this.skinTone = pickRandomSkinTone();
-    this.spottedAdvertisement = true;
+    this.spottedAdvertisement = false;
     this.headingToStore = false;
     this.currentPathIdx = 1;
   }
   
+  // Method to pick a random skin tone out of the available options specified.
   color pickRandomSkinTone() {
-    int randomSkinToneIdx = int(random(0, skinTones.length));
+    int randomSkinToneIdx = int(random(0, skinTones.length)); // Obtaining a random index in the skin tones array
     return skinTones[ randomSkinToneIdx ];
   }
   
-  boolean checkInSquare(int squareRow, int squareCol) {
-    int colIdxL = xPositionToIndex(this.pos.x);
-    int rowIdxT = yPositionToIndex(this.pos.y);
-    int colIdxR = xPositionToIndex(this.pos.x + personWidth);
-    int rowIdxB = yPositionToIndex(this.pos.y + personWidth);
+  // Check if the person is fully inside of a specified square/rectangle
+  boolean checkInRectangle(int squareRow, int squareCol) {
+    int colIdxL = xPositionToIndex(this.pos.x); // Left side
+    int rowIdxT = yPositionToIndex(this.pos.y); // Top side
+    int colIdxR = xPositionToIndex(this.pos.x + personWidth); // Right side
+    int rowIdxB = yPositionToIndex(this.pos.y + personWidth); // Bottom side
+    
+    // First 2 checks are seeing if both pairs of sides are in the same square/rectangle, the next 2 are checking if they are in the specified square/rectangle
     if (colIdxL == colIdxR && rowIdxT == rowIdxB && colIdxL == squareCol && rowIdxT == squareRow) {
       return true;
     } else {
@@ -38,40 +43,43 @@ class Person {
     }
   }
   
-  void drawMe() {
-    stroke(this.skinTone);
-    fill(this.skinTone);
-    square(this.pos.x, this.pos.y, 20);
-  }
-  
-  void goToSquare(int rowIdx, int colIdx) {
-    float targetX = (colIdx + 0.5) * colSpacing;
-    float targetY = (rowIdx + 0.5) * rowSpacing;
-    PVector targetPos = new PVector(targetX, targetY);
+  // Tell the user to go to a specified square/rectangle
+  void goToRectangle(int rowIdx, int colIdx) {
+    float targetX = (colIdx + 0.5) * colSpacing; // The horizontally middle position of the square/rectangle
+    float targetY = (rowIdx + 0.5) * rowSpacing; // The vertically middle position of the square/rectangle
+    PVector targetPos = new PVector(targetX, targetY); // The vector of the middle of the specified square/rectangle
     
-    PVector directionVector = targetPos.sub(this.pos);
-    float angle = directionVector.heading();
-    this.vel = new PVector(this.speed * cos(angle), this.speed*sin(angle));
+    PVector directionVector = targetPos.sub(this.pos); // Obtaining the vector that specifies what direction the person should go in to the specified square/rectangle
+    this.personAngle = directionVector.heading(); // Obtaining the angle of the direction vector
+    this.vel = new PVector(this.speed * cos(this.personAngle), this.speed*sin(this.personAngle)); // Changing the velocity of the person to go in the direction of the specified square
   }
   
+  // BFS algorithm to find the path to the store
   ArrayList<int[]> findPathToStore() {
+    
+    // Our starting square/rectangle location in the city layout
     int startRow = yPositionToIndex(this.pos.y);
     int startCol = xPositionToIndex(this.pos.x);
     
-    ArrayList< ArrayList< int[] > > allPaths = new ArrayList();
+    ArrayList< ArrayList< int[] > > allPaths = new ArrayList(); // Array that stores all of the possible paths that the person goes in to find the store
+    
+    // Setting up the 2D array to see where the person has visited. We don't want to visit duplicate squares
     boolean[][] visitedCityLayout = new boolean[layout.numCityRows][layout.numCityCols];
     for (int i = 0; i < layout.numCityRows; i++) {
       for (int j = 0; j < layout.numCityCols; j++) {
         visitedCityLayout[i][j] = false;
       }
     }
+    
+    // Initializing the beginning path
+    visitedCityLayout[startRow][startCol] = true;
     int[] startingSquare = {startRow, startCol};
     ArrayList<int[]> startingPath = new ArrayList(); //<>//
     startingPath.add(startingSquare);
     
     allPaths.add(startingPath);
     
-    ArrayList<int[]> generatedPath = new ArrayList();
+    ArrayList<int[]> generatedPath = new ArrayList(); // The path that will be returned if the person can make it to the store
     while (allPaths.size() > 0) {
       ArrayList<int[]> curPath = allPaths.remove(0);
       int[] curSquare = curPath.get(curPath.size() - 1);
@@ -112,12 +120,24 @@ class Person {
     
   }
   
+  int getVisionDirectionIndex(int octant) {
+    float rayOne = octant * (HALF_PI/2);
+    float rayTwo = (octant + 1) * (HALF_PI/2);
+    float diffOne = abs(this.personAngle - rayOne);
+    float diffTwo = abs(this.personAngle - rayTwo);
+    if (diffOne <= diffTwo) {
+      return octant;
+    } else {
+      return (octant + 1) % 8;
+    }
+  }
+  
   void move() {
     if (this.spottedAdvertisement == true) {
       int colIdxL = xPositionToIndex(this.pos.x);
       int rowIdxT = yPositionToIndex(this.pos.y);
-      if (this.checkInSquare(rowIdxT, colIdxL) == false) {
-        goToSquare(rowIdxT, colIdxL);
+      if (this.checkInRectangle(rowIdxT, colIdxL) == false) {
+        goToRectangle(rowIdxT, colIdxL);
         this.pos.add(this.vel);
       } else {
         println(layout.storeRow, layout.storeCol);
@@ -139,8 +159,8 @@ class Person {
     }
     
     if (headingToStore == true) {
-      if (checkInSquare(this.nextPathRow, this.nextPathCol) == false) {
-        goToSquare(this.nextPathRow, this.nextPathCol);
+      if (checkInRectangle(this.nextPathRow, this.nextPathCol) == false) {
+        goToRectangle(this.nextPathRow, this.nextPathCol);
         this.pos.add(this.vel);
       } else {
         this.currentPathIdx++;
@@ -154,9 +174,9 @@ class Person {
     }
     
     if (!spottedAdvertisement && !headingToStore) {
-      if (random(100) <= 10) {
-        float angle = random(0, TWO_PI);
-        this.vel = new PVector(this.speed * cos(angle), this.speed*sin(angle));
+      if (random(100) <= 7) {
+        this.personAngle = random(0, TWO_PI);
+        this.vel = new PVector(this.speed * cos(this.personAngle), this.speed*sin(this.personAngle));
       }
       
       this.pos.add(this.vel);
@@ -164,5 +184,18 @@ class Person {
         this.pos.sub(this.vel);
       }
     }
+  }
+  
+  // Drawing the person to the screen
+  void drawMe() {
+    stroke(this.skinTone);
+    fill(this.skinTone);
+    strokeWeight(2);
+    
+    int octant = int((this.personAngle * 8) / TWO_PI);
+    println(octant);
+    
+    line(150 * cos(this.personAngle) + this.pos.x, 150 * sin(this.personAngle) + this.pos.y, this.pos.x, this.pos.y);
+    square(this.pos.x, this.pos.y, 20);
   }
 }
