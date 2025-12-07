@@ -138,7 +138,8 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
 } //_CODE_:displayControl:510305:
 
-public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305: 
+public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305:
+
   int rowNum = source.getSelectedIndex();
   
   weatherChosen = true;
@@ -176,7 +177,7 @@ public void createGUI(){
   usercontrols.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
   usercontrols.setOpaque(false);
   colSlider = new GCustomSlider(userControl, 14, 72, 100, 40, "red_yellow18px");
-  colSlider.setLimits(5, 5, 20);
+  colSlider.setLimits(12, 5, 20);
   colSlider.setNumberFormat(G4P.INTEGER, 0);
   colSlider.setLocalColorScheme(GCScheme.RED_SCHEME);
   colSlider.setOpaque(false);
@@ -187,7 +188,7 @@ public void createGUI(){
   collabel.setLocalColorScheme(GCScheme.RED_SCHEME);
   collabel.setOpaque(false);
   rSlider = new GCustomSlider(userControl, 161, 71, 100, 40, "blue18px");
-  rSlider.setLimits(5, 5, 20);
+  rSlider.setLimits(7, 5, 20);
   rSlider.setNumberFormat(G4P.INTEGER, 0);
   rSlider.setOpaque(false);
   rSlider.addEventHandler(this, "rowSlider");

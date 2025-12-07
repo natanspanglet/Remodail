@@ -188,14 +188,10 @@ class Person {
   
   // Drawing the person to the screen
   void drawMe() {
-    stroke(this.skinTone);
+    noStroke();
     fill(this.skinTone);
-    strokeWeight(2);
     
     int octant = int((this.personAngle * 8) / TWO_PI);
-    println(octant);
-    
-    line(150 * cos(this.personAngle) + this.pos.x, 150 * sin(this.personAngle) + this.pos.y, this.pos.x, this.pos.y);
     square(this.pos.x, this.pos.y, 20);
   }
 }
