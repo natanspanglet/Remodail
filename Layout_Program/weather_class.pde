@@ -3,6 +3,7 @@ class Weather {
   ArrayList<PVector> particles;
   int spawnRate = 2;  // how many particles appear per frame
   int maxParticles = 200;
+  float life; 
 
   Weather(String wt) {
     this.weatherType = wt;
@@ -16,13 +17,19 @@ class Weather {
       sunny();
     else if (weatherType.equals("snowing"))
       snow();
+   removeOldParticles();
   }
 
   void spawnParticles() {
     // Only spawn particles until we reach maxParticles
     for (int i = 0; i < spawnRate && particles.size() < maxParticles; i++) {
-      particles.add(new PVector(random(0, width), random(0, height)));
-    }
+      float x = random(width);
+      float y = random(height);
+      //How long the particles will stay on screen 
+      float life = random(20, 60);   
+
+    particles.add(new PVector(x, y, life)); 
+  }
   }
 
   void drawParticles(int r, int g, int b) {
@@ -32,6 +39,21 @@ class Weather {
       square(p.x, p.y, 5);
     }
   }
+  
+  void removeOldParticles() {
+  for (int i = particles.size() - 1; i >= 0; i--) {
+    PVector p = particles.get(i);
+    
+    //Subtracts lifespan each frame 
+    p.z--;      
+
+    if (p.z <= 0) {
+      //Removes the particle from the screen 
+      particles.remove(i); 
+    }
+  }
+}
+
 
   void rain() {
     spawnParticles();
@@ -47,4 +69,5 @@ class Weather {
     spawnParticles();
     drawParticles(255, 255, 255);
   }
+  
 }
