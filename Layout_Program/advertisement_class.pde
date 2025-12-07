@@ -1,19 +1,11 @@
 class Advertisement{
   String adType;
-  int numAds;
+  float effectiveness;
   
-  Advertisement(String ad, int num){
+  Advertisement(String ad, int e){
     this.adType = ad;
-    this.numAds = num;
+    this.effectiveness = e;
+    
   }
   
-  
-  void advertise(){
-    if (adType.equals("billboard")){
-      int people = this.numAds * 10;
-    }
-    else if (adType.equals("TV screen")){
-      int people = this.numAds * 10;
-    }
-  }
 }

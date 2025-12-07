@@ -4,8 +4,8 @@ class Person {
   color skinTone;
   boolean spottedAdvertisement, headingToStore;
   ArrayList<int[]> pathToStore;
-  int[] nextPathSquare;
-  int currentPathIdx, nextPathRow, nextPathCol;
+  int[] nextPathRectangle;
+  int currentPathIdx, nextPathRow, nextPathCol, octant, personRowIdx, personColIdx;
   
   Person(PVector p, PVector v, float s, float vR, float m, float pA){
     this.pos = p;
@@ -20,6 +20,9 @@ class Person {
     this.spottedAdvertisement = false;
     this.headingToStore = false;
     this.currentPathIdx = 1;
+    this.octant = int((this.personAngle * 8) / TWO_PI);
+    this.personRowIdx = yPositionToIndex(this.pos.y);
+    this.personColIdx = xPositionToIndex(this.pos.x);
   }
   
   // Method to pick a random skin tone out of the available options specified.
@@ -43,6 +46,14 @@ class Person {
     }
   }
   
+  boolean checkValidRectangle(int row, int col) {
+    if (row < 0 || row >= layout.numCityRows || col < 0 || col >= layout.numCityCols) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  
   // Tell the user to go to a specified square/rectangle
   void goToRectangle(int rowIdx, int colIdx) {
     float targetX = (colIdx + 0.5) * colSpacing; // The horizontally middle position of the square/rectangle
@@ -58,8 +69,8 @@ class Person {
   ArrayList<int[]> findPathToStore() {
     
     // Our starting square/rectangle location in the city layout
-    int startRow = yPositionToIndex(this.pos.y);
-    int startCol = xPositionToIndex(this.pos.x);
+    int startRow = this.personRowIdx;
+    int startCol = this.personColIdx;
     
     ArrayList< ArrayList< int[] > > allPaths = new ArrayList(); // Array that stores all of the possible paths that the person goes in to find the store
     
@@ -95,7 +106,7 @@ class Person {
         int newRow = curRow + dir[0];
         int newCol = curCol + dir[1];
         
-        if (newRow < 0 || newRow >= layout.numCityRows || newCol < 0 || newCol >= layout.numCityCols) {
+        if (checkValidRectangle(newRow, newCol) == false) {
           continue;
         }
         
@@ -120,9 +131,9 @@ class Person {
     
   }
   
-  int getVisionDirectionIndex(int octant) {
-    float rayOne = octant * (HALF_PI/2);
-    float rayTwo = (octant + 1) * (HALF_PI/2);
+  int getVisionDirectionIndex() {
+    float rayOne = this.octant * (HALF_PI/2);
+    float rayTwo = (this.octant + 1) * (HALF_PI/2);
     float diffOne = abs(this.personAngle - rayOne);
     float diffTwo = abs(this.personAngle - rayTwo);
     if (diffOne <= diffTwo) {
@@ -134,25 +145,22 @@ class Person {
   
   void move() {
     if (this.spottedAdvertisement == true) {
-      int colIdxL = xPositionToIndex(this.pos.x);
-      int rowIdxT = yPositionToIndex(this.pos.y);
-      if (this.checkInRectangle(rowIdxT, colIdxL) == false) {
-        goToRectangle(rowIdxT, colIdxL);
+      if (this.checkInRectangle(this.personRowIdx, this.personColIdx) == false) {
+        goToRectangle(this.personRowIdx, this.personColIdx);
         this.pos.add(this.vel);
       } else {
-        println(layout.storeRow, layout.storeCol);
         this.spottedAdvertisement = false;
         this.headingToStore = true;
         
         this.pathToStore = this.findPathToStore();
         
         if (this.pathToStore.size() > 0) {
-          this.nextPathSquare = this.pathToStore.get(currentPathIdx);
-          this.nextPathRow = this.nextPathSquare[0];
-          this.nextPathCol = this.nextPathSquare[1];
+          this.nextPathRectangle = this.pathToStore.get(currentPathIdx);
+          this.nextPathRow = this.nextPathRectangle[0];
+          this.nextPathCol = this.nextPathRectangle[1];
         } else {
-          this.nextPathRow = rowIdxT;
-          this.nextPathCol = colIdxL;
+          this.nextPathRow = this.personRowIdx;
+          this.nextPathCol = this.personColIdx;
         }
       }
       
@@ -166,9 +174,9 @@ class Person {
         this.currentPathIdx++;
         
         if (this.currentPathIdx < this.pathToStore.size()) {
-          this.nextPathSquare = this.pathToStore.get(currentPathIdx);
-          this.nextPathRow = this.nextPathSquare[0];
-          this.nextPathCol = this.nextPathSquare[1];
+          this.nextPathRectangle = this.pathToStore.get(currentPathIdx);
+          this.nextPathRow = this.nextPathRectangle[0];
+          this.nextPathCol = this.nextPathRectangle[1];
         }
       }
     }
@@ -183,7 +191,20 @@ class Person {
       if (validPlacement(pos, 0) == false) {
         this.pos.sub(this.vel);
       }
+      int visionDirectionIndex = this.getVisionDirectionIndex();
+      int visionDirectionRow = this.personRowIdx + visionDirection[visionDirectionIndex][0];
+      int visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
+      
+      if (checkValidRectangle(visionDirectionRow, visionDirectionCol) == true) {
+        if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("none")) {
+          println("WORKS");
+        }
+      }
+
     }
+    
+    this.personRowIdx = yPositionToIndex(this.pos.y);
+    this.personColIdx = xPositionToIndex(this.pos.x);
   }
   
   // Drawing the person to the screen
@@ -191,7 +212,6 @@ class Person {
     noStroke();
     fill(this.skinTone);
     
-    int octant = int((this.personAngle * 8) / TWO_PI);
     square(this.pos.x, this.pos.y, 20);
   }
 }

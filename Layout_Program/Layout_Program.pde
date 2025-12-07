@@ -35,7 +35,7 @@ color[] skinTones = {
 };
 
 
-int rows =7;
+int rows = 7;
 int cols = 12;
 
 Time[] theTimes = new Time[1];
@@ -43,6 +43,8 @@ String[] mostHolidays;
 
 int[][] adjDirection = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 int[][] visionDirection = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
+
+Advertisement[][] adLayout;
 
 //Screen size will be 800 by 600
 void setup() {
@@ -57,6 +59,13 @@ void setup() {
   populationNumber = 20;
   
   screenType = "building";
+  
+  adLayout = new Advertisement[layout.numCityRows][layout.numCityCols];
+  for (int i = 0; i < layout.numCityRows; i++) {
+    for (int j = 0; j < layout.numCityCols; j++) {
+      adLayout[i][j] = new Advertisement("none", 0);
+    }
+  }
   
   mostHolidays = loadStrings("holidayData.txt");
   Time theTime = new Time("10:00", 5, 4, 12, 2025);
@@ -83,6 +92,9 @@ void draw() {
     theTimes[0].display();
     theTimes[0].update();
     
+    if (population == null) {
+      println("POPULATION IS NULL");
+    }
     for(Person p: population) {
       p.drawMe();
       p.move();

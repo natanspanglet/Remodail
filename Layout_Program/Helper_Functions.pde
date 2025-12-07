@@ -1,22 +1,17 @@
 int xPositionToIndex(float x) {
-  for(int j = 0; j < layout.numCityCols; j++) {
-    float k = x - j * colSpacing;
-    if (k <= colSpacing) {
-      return j;
-    }
+  int colIdx = int(x / colSpacing);
+  if (colIdx >= layout.numCityCols) {
+    colIdx = layout.numCityCols - 1;
   }
-  return layout.numCityCols-1;
+  return colIdx;
 }
 
 int yPositionToIndex(float y) {
-  for (int i = 0; i < layout.numCityRows; i++) {
-    float k = y - i * rowSpacing;
-    if (k <= rowSpacing) {
-      return i;
-    }
+  int rowIdx = int(y / rowSpacing);
+  if (rowIdx >= layout.numCityRows) {
+    rowIdx = layout.numCityRows - 1;
   }
-  
-  return layout.numCityRows-1;
+  return rowIdx;
 }
 
 boolean validPlacement(PVector p, int check) {

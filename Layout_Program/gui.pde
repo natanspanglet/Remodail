@@ -25,7 +25,7 @@ public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlid
   layout = new Layout(rows, cols);
 
   //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
-  population = null;
+  population = new Person[0];
   
   colSpacing = width / layout.numCityCols;
 
@@ -50,7 +50,7 @@ public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837
   layout = new Layout(rows, cols);
 
   //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
-  population = null;
+  population = new Person[0];
   
   rowSpacing = height / layout.numCityRows;
 
