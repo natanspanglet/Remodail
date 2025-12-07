@@ -46,6 +46,7 @@ class Person {
     }
   }
   
+  // Method to check if a specified row and column is within the bounds of the 2D cityLayout array
   boolean checkValidRectangle(int row, int col) {
     if (row < 0 || row >= layout.numCityRows || col < 0 || col >= layout.numCityCols) {
       return false;
@@ -144,18 +145,25 @@ class Person {
   }
   
   void move() {
+    // First check if a person has already spotted an advertisement
     if (this.spottedAdvertisement == true) {
+      
+      // Check if the person is fully contained in a square/rectangle to avoid clipping
       if (this.checkInRectangle(this.personRowIdx, this.personColIdx) == false) {
+        // Make the person go fully contained in the nearest square
         goToRectangle(this.personRowIdx, this.personColIdx);
         this.pos.add(this.vel);
+        
       } else {
+        // Begin the person's journey to find the store
         this.spottedAdvertisement = false;
         this.headingToStore = true;
         
         this.pathToStore = this.findPathToStore();
         
+        // If there is a valid path to the store, begin going towards it. Else, stay at the same location
         if (this.pathToStore.size() > 0) {
-          this.nextPathRectangle = this.pathToStore.get(currentPathIdx);
+          this.nextPathRectangle = this.pathToStore.get(currentPathIdx); // currentPathIdx starts at 1 because the first element (0) is the current position.
           this.nextPathRow = this.nextPathRectangle[0];
           this.nextPathCol = this.nextPathRectangle[1];
         } else {
@@ -166,11 +174,16 @@ class Person {
       
     }
     
+    // When the user has begun to go to the store
     if (headingToStore == true) {
+      
+      // Check to see if the person is at the location of the next tile in the path to the store
       if (checkInRectangle(this.nextPathRow, this.nextPathCol) == false) {
         goToRectangle(this.nextPathRow, this.nextPathCol);
         this.pos.add(this.vel);
       } else {
+        
+        // If the person is at the next path, update on where the person should go next
         this.currentPathIdx++;
         
         if (this.currentPathIdx < this.pathToStore.size()) {
@@ -181,16 +194,24 @@ class Person {
       }
     }
     
+    // If the person has neither spotted an advertisment nor headed towards a store, make them in "free motion"
     if (!spottedAdvertisement && !headingToStore) {
+      
+      // Changing the direction/heading of the person
       if (random(100) <= 7) {
         this.personAngle = random(0, TWO_PI);
         this.vel = new PVector(this.speed * cos(this.personAngle), this.speed*sin(this.personAngle));
       }
       
+      // Making the person actually move
       this.pos.add(this.vel);
+      
+      // If the person is not in a valid location, revert the applied movement
       if (validPlacement(pos, 0) == false) {
         this.pos.sub(this.vel);
       }
+      
+      // Checking if the person can see an advertisement within the vicinity
       int visionDirectionIndex = this.getVisionDirectionIndex();
       int visionDirectionRow = this.personRowIdx + visionDirection[visionDirectionIndex][0];
       int visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
@@ -203,6 +224,7 @@ class Person {
 
     }
     
+    // Updating the current person's row and column index in the 2D cityLayout array
     this.personRowIdx = yPositionToIndex(this.pos.y);
     this.personColIdx = xPositionToIndex(this.pos.x);
   }

@@ -27,11 +27,14 @@ boolean validPlacement(PVector p, int check) {
   }
 }
 
+// Helper function to generate a new population each time the slider is changed
 void generatePopulation() {
   population = new Person[populationNumber];
   for (int i = 0; i < population.length; i++) {
+    
     boolean validPlacement = false;
     PVector p = new PVector(0, 0);
+    
     while (validPlacement == false) {
       p = new PVector(int(random(0, width)), int(random(0, height)));
       validPlacement = validPlacement(p, 0);
