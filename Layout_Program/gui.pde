@@ -27,6 +27,9 @@ public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlid
   //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
   population = new Person[0];
   
+  // generate new AdLayout
+  generateAdLayout();
+  
   colSpacing = width / layout.numCityCols;
 
   // Reset store-related values (makes it so that you can still place only one store)
@@ -51,6 +54,9 @@ public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837
 
   //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
   population = new Person[0];
+  
+  // making new Ad layout
+  generateAdLayout();
   
   rowSpacing = height / layout.numCityRows;
 

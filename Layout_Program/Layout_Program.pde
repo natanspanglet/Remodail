@@ -59,13 +59,7 @@ void setup() {
   populationNumber = 20;
   
   screenType = "building";
-  
-  adLayout = new Advertisement[layout.numCityRows][layout.numCityCols];
-  for (int i = 0; i < layout.numCityRows; i++) {
-    for (int j = 0; j < layout.numCityCols; j++) {
-      adLayout[i][j] = new Advertisement("none", 0);
-    }
-  }
+  generateAdLayout();
   
   mostHolidays = loadStrings("holidayData.txt");
   Time theTime = new Time("10:00", 5, 4, 12, 2025);

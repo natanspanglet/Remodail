@@ -47,6 +47,15 @@ void generatePopulation() {
   }
 }
 
+void generateAdLayout() {
+  adLayout = new Advertisement[layout.numCityRows][layout.numCityCols];
+  for (int i = 0; i < layout.numCityRows; i++) {
+    for (int j = 0; j < layout.numCityCols; j++) {
+      adLayout[i][j] = new Advertisement("none", 0);
+    }
+  }
+}
+
 ArrayList<int[]> deepcopy(ArrayList<int[]> src) {
   ArrayList<int[]> copiedArray = new ArrayList();
   for (int[] element: src) {
@@ -55,6 +64,7 @@ ArrayList<int[]> deepcopy(ArrayList<int[]> src) {
   
   return copiedArray;
 }
+
 
 //void generateCars(){
 // cars = new Car[carNum];
