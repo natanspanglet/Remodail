@@ -55,15 +55,15 @@ void generateAdLayout() {
     }
   }
 }
-
-ArrayList<int[]> deepcopy(ArrayList<int[]> src) {
-  ArrayList<int[]> copiedArray = new ArrayList();
-  for (int[] element: src) {
-    copiedArray.add(element);
+int[][] shuffleAdjDirectionArray() {
+  shuffleIndexes.shuffle();
+  int[][] shuffledAdjDirections = new int[4][2];
+  for (int i = 0; i < adjDirection.length; i++) {
+    shuffledAdjDirections[i] = adjDirection[ shuffleIndexes.get(i) ];
   }
-  
-  return copiedArray;
+  return shuffledAdjDirections;
 }
+
 
 
 //void generateCars(){

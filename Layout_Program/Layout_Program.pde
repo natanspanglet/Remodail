@@ -41,6 +41,8 @@ int cols = 12;
 Time[] theTimes = new Time[1];
 String[] mostHolidays;
 
+int[] zeroToThree = {0, 1, 2, 3};
+IntList shuffleIndexes = new IntList(zeroToThree);
 int[][] adjDirection = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 int[][] visionDirection = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 

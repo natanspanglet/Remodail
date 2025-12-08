@@ -1,4 +1,4 @@
-class Person {
+class Person { //<>//
   PVector pos, vel;
   float visionRadius, money, buyUrge, speed, personAngle;
   color skinTone;
@@ -6,38 +6,38 @@ class Person {
   ArrayList<int[]> pathToStore;
   int[] nextPathRectangle;
   int currentPathIdx, nextPathRow, nextPathCol, octant, personRowIdx, personColIdx;
-  
-  Person(PVector p, PVector v, float s, float vR, float m, float pA){
+
+  Person(PVector p, PVector v, float s, float vR, float m, float pA) {
     this.pos = p;
     this.vel = v;
     this.speed = s;
     this.visionRadius = vR;
     this.money = m;
     this.personAngle = pA;
-    
+
     this.buyUrge = 0;
     this.skinTone = pickRandomSkinTone();
-    this.spottedAdvertisement = false;
+    this.spottedAdvertisement = true;
     this.headingToStore = false;
     this.currentPathIdx = 1;
     this.octant = int((this.personAngle * 8) / TWO_PI);
     this.personRowIdx = yPositionToIndex(this.pos.y);
     this.personColIdx = xPositionToIndex(this.pos.x);
   }
-  
+
   // Method to pick a random skin tone out of the available options specified.
   color pickRandomSkinTone() {
     int randomSkinToneIdx = int(random(0, skinTones.length)); // Obtaining a random index in the skin tones array
     return skinTones[ randomSkinToneIdx ];
   }
-  
+
   // Check if the person is fully inside of a specified square/rectangle
   boolean checkInRectangle(int squareRow, int squareCol) {
     int colIdxL = xPositionToIndex(this.pos.x); // Left side
     int rowIdxT = yPositionToIndex(this.pos.y); // Top side
     int colIdxR = xPositionToIndex(this.pos.x + personWidth); // Right side
     int rowIdxB = yPositionToIndex(this.pos.y + personWidth); // Bottom side
-    
+
     // First 2 checks are seeing if both pairs of sides are in the same square/rectangle, the next 2 are checking if they are in the specified square/rectangle
     if (colIdxL == colIdxR && rowIdxT == rowIdxB && colIdxL == squareCol && rowIdxT == squareRow) {
       return true;
@@ -45,7 +45,7 @@ class Person {
       return false;
     }
   }
-  
+
   // Method to check if a specified row and column is within the bounds of the 2D cityLayout array
   boolean checkValidRectangle(int row, int col) {
     if (row < 0 || row >= layout.numCityRows || col < 0 || col >= layout.numCityCols) {
@@ -54,84 +54,104 @@ class Person {
       return true;
     }
   }
-  
+
   // Tell the user to go to a specified square/rectangle
   void goToRectangle(int rowIdx, int colIdx) {
     float targetX = (colIdx + 0.5) * colSpacing; // The horizontally middle position of the square/rectangle
     float targetY = (rowIdx + 0.5) * rowSpacing; // The vertically middle position of the square/rectangle
     PVector targetPos = new PVector(targetX, targetY); // The vector of the middle of the specified square/rectangle
-    
+
     PVector directionVector = targetPos.sub(this.pos); // Obtaining the vector that specifies what direction the person should go in to the specified square/rectangle
     this.personAngle = directionVector.heading(); // Obtaining the angle of the direction vector
     this.vel = new PVector(this.speed * cos(this.personAngle), this.speed*sin(this.personAngle)); // Changing the velocity of the person to go in the direction of the specified square
   }
-  
+
   // BFS algorithm to find the path to the store
   ArrayList<int[]> findPathToStore() {
     
+    /*
+    MORE EFFICIENT BFS ALGORITHM AFTER MUCH THOUGHT
+    Inspiration: Tony asked me "How would this program run in virtual desktop? Your BFS algorithm is so resource intensive" (not literally, that's more of an abridged version of what he told me). So I thought: CHALLENGE ACCEPTED
+    This method searches for a path from the person to the store. The BFS algorithm begins searching at the store's location, and then branches out until it reaches where the person is located.
+    The path is stored in a 3D array. Each {row, col} pair in the visitedCityLayout 3D array stores where the person just came from. E.g: If the person was just on (3,4) and moved to (3,5), the visitedCityLayout[3][5] would store the {row, col} pair of {3, 4}.
+    This allows the algorithm to simply "backtrack" from the person to the store, as we just add the current row and current column to the generatedPath array, and then use it to go to the previous one, continuing on until we reach the store.
+    This makes the method a lot more efficient because we no longer store every single path of the possible paths the person can travel. 
+    */
+
     // Our starting square/rectangle location in the city layout
     int startRow = this.personRowIdx;
     int startCol = this.personColIdx;
-    
-    ArrayList< ArrayList< int[] > > allPaths = new ArrayList(); // Array that stores all of the possible paths that the person goes in to find the store
-    
-    // Setting up the 2D array to see where the person has visited. We don't want to visit duplicate squares
-    boolean[][] visitedCityLayout = new boolean[layout.numCityRows][layout.numCityCols];
+
+    ArrayList< int[] > allPaths = new ArrayList(); // Array that stores all of the possible paths that the person goes in to find the store
+
+    // Setting up the 3D array to see where the person has visited. We don't want to visit duplicate squares. If a tile/square is [-1, -1], that means they haven't visited it. If it's other numbers, then they have visited it.
+    int[][][] visitedCityLayout = new int[layout.numCityRows][layout.numCityCols][2];
     for (int i = 0; i < layout.numCityRows; i++) {
       for (int j = 0; j < layout.numCityCols; j++) {
-        visitedCityLayout[i][j] = false;
+        visitedCityLayout[i][j][0] = -1; // Stores the row that the person just came from
+        visitedCityLayout[i][j][1] = -1; // Stores the column that the person just came from
       }
     }
-    
+
     // Initializing the beginning path
-    visitedCityLayout[startRow][startCol] = true;
-    int[] startingSquare = {startRow, startCol};
-    ArrayList<int[]> startingPath = new ArrayList(); //<>//
-    startingPath.add(startingSquare);
+    visitedCityLayout[layout.storeRow][layout.storeCol][0] = startRow;
+    visitedCityLayout[layout.storeRow][layout.storeCol][1] = startCol;
+    int[] startPath = {layout.storeRow, layout.storeCol};
+    allPaths.add(startPath);
     
-    allPaths.add(startingPath);
-    
-    ArrayList<int[]> generatedPath = new ArrayList(); // The path that will be returned if the person can make it to the store
+    ArrayList< int[] > generatedPath = new ArrayList(); // The path that will be returned if the person can make it to the store. If they can't make it, the generatedPath variable will be empty
     while (allPaths.size() > 0) {
-      ArrayList<int[]> curPath = allPaths.remove(0);
-      int[] curSquare = curPath.get(curPath.size() - 1);
-      int curRow = curSquare[0];
-      int curCol = curSquare[1];
       
-      if (curRow == layout.storeRow && curCol == layout.storeCol) {
-        generatedPath = curPath;
+      // The current tile/square obtained from the BFS
+      int[] curSquare = allPaths.remove(0);
+      int curRow = curSquare[0]; // Row from the current tile/square
+      int curCol = curSquare[1]; // Column from the current tile/square
+      
+      // If we have reached the store's tile/square, construct the generatedPath for the user t
+      if (curRow == startRow && curCol == startCol) {
+        while (curRow != layout.storeRow || curCol != layout.storeCol) {
+          int[] curPath = {curRow, curCol};
+          generatedPath.add(curPath);
+
+          int prevRow = visitedCityLayout[curRow][curCol][0];
+          int prevCol = visitedCityLayout[curRow][curCol][1];
+
+          curRow = prevRow;
+          curCol = prevCol;
+        }
+        int[] prevPath = {curRow, curCol};
+        generatedPath.add(prevPath);
         break;
       }
       
-      for (int[] dir: adjDirection) {
-        int newRow = curRow + dir[0];
-        int newCol = curCol + dir[1];
-        
+      // Going in all four adjacent directions
+      for (int[] dir : shuffleAdjDirectionArray()) {
+        int newRow = curRow + dir[0]; // dir[0] corresponds to the direction of the row (-1 means going up, 1 means going down)
+        int newCol = curCol + dir[1]; // dir[1] corresponds to the direction of the column (-1 means going left, 1 means going right)
+
+        // A lot of checks to make sure that the new row and new column of the search is a valid location
         if (checkValidRectangle(newRow, newCol) == false) {
           continue;
         }
-        
+
         if (layout.cityLayout[newRow][newCol] != 0 && layout.cityLayout[newRow][newCol] != 1) {
           continue;
         }
         
-        if (visitedCityLayout[newRow][newCol] == false) {
-          visitedCityLayout[newRow][newCol] = true;
-          ArrayList<int[]> newPath = deepcopy(curPath);
-          int[] newSquare = {newRow, newCol};
-          newPath.add(newSquare);
-          
-          allPaths.add(newPath);
-          
+        // If we have not visited the new row and new column we are at:
+        if (visitedCityLayout[newRow][newCol][0] == -1 && visitedCityLayout[newRow][newCol][1] == -1) {
+          visitedCityLayout[newRow][newCol][0] = curRow; // As stated in the method briefing, we assign the new row location with the previous one
+          visitedCityLayout[newRow][newCol][1] = curCol; // As stated in the method briefing, we assign the new column location with the previous one
+          int[] nextPath = {newRow, newCol};
+
+          allPaths.add(nextPath);
         }
       }
-      
     }
-    
+
     return generatedPath;
-    
   }
-  
+
   int getVisionDirectionIndex() {
     float rayOne = this.octant * (HALF_PI/2);
     float rayTwo = (this.octant + 1) * (HALF_PI/2);
@@ -143,24 +163,23 @@ class Person {
       return (octant + 1) % 8;
     }
   }
-  
+
   void move() {
     // First check if a person has already spotted an advertisement
     if (this.spottedAdvertisement == true) {
-      
+
       // Check if the person is fully contained in a square/rectangle to avoid clipping
       if (this.checkInRectangle(this.personRowIdx, this.personColIdx) == false) {
         // Make the person go fully contained in the nearest square
         goToRectangle(this.personRowIdx, this.personColIdx);
         this.pos.add(this.vel);
-        
       } else {
         // Begin the person's journey to find the store
         this.spottedAdvertisement = false;
         this.headingToStore = true;
-        
+
         this.pathToStore = this.findPathToStore();
-        
+
         // If there is a valid path to the store, begin going towards it. Else, stay at the same location
         if (this.pathToStore.size() > 0) {
           this.nextPathRectangle = this.pathToStore.get(currentPathIdx); // currentPathIdx starts at 1 because the first element (0) is the current position.
@@ -171,21 +190,20 @@ class Person {
           this.nextPathCol = this.personColIdx;
         }
       }
-      
     }
-    
+
     // When the user has begun to go to the store
     if (headingToStore == true) {
-      
+
       // Check to see if the person is at the location of the next tile in the path to the store
       if (checkInRectangle(this.nextPathRow, this.nextPathCol) == false) {
         goToRectangle(this.nextPathRow, this.nextPathCol);
         this.pos.add(this.vel);
       } else {
-        
+
         // If the person is at the next path, update on where the person should go next
         this.currentPathIdx++;
-        
+
         if (this.currentPathIdx < this.pathToStore.size()) {
           this.nextPathRectangle = this.pathToStore.get(currentPathIdx);
           this.nextPathRow = this.nextPathRectangle[0];
@@ -193,47 +211,46 @@ class Person {
         }
       }
     }
-    
+
     // If the person has neither spotted an advertisment nor headed towards a store, make them in "free motion"
     if (!spottedAdvertisement && !headingToStore) {
-      
+
       // Changing the direction/heading of the person
       if (random(100) <= 7) {
         this.personAngle = random(0, TWO_PI);
         this.vel = new PVector(this.speed * cos(this.personAngle), this.speed*sin(this.personAngle));
       }
-      
+
       // Making the person actually move
       this.pos.add(this.vel);
-      
+
       // If the person is not in a valid location, revert the applied movement
       if (validPlacement(pos, 0) == false) {
         this.pos.sub(this.vel);
       }
-      
+
       // Checking if the person can see an advertisement within the vicinity
       int visionDirectionIndex = this.getVisionDirectionIndex();
       int visionDirectionRow = this.personRowIdx + visionDirection[visionDirectionIndex][0];
       int visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
-      
+
       if (checkValidRectangle(visionDirectionRow, visionDirectionCol) == true) {
         if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("none")) {
           println("WORKS");
         }
       }
-
     }
-    
+
     // Updating the current person's row and column index in the 2D cityLayout array
     this.personRowIdx = yPositionToIndex(this.pos.y);
     this.personColIdx = xPositionToIndex(this.pos.x);
   }
-  
+
   // Drawing the person to the screen
   void drawMe() {
     noStroke();
     fill(this.skinTone);
-    
+
     square(this.pos.x, this.pos.y, 20);
   }
 }
