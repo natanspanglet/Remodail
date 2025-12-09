@@ -47,7 +47,7 @@ IntList shuffleIndexes = new IntList(zeroToThree);
 int[][] adjDirection = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 int[][] visionDirection = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 
-Advertisement[][] adLayout;
+AdvertisementLayout adLayout;
 boolean adButtonClicked = false;
 String placeAdType = "none";
 int adRowIdx, adColIdx;
@@ -66,7 +66,8 @@ void setup() {
   populationNumber = 20;
   
   screenType = "building";
-  generateAdLayout();
+  
+  adLayout = new AdvertisementLayout(layout.numCityRows, layout.numCityCols);
   
   mostHolidays = loadStrings("holidayData.txt");
   Time theTime = new Time("10:00", 5, 4, 12, 2025);
@@ -119,11 +120,11 @@ void mouseClicked() {
     }
   
   } else if (screenType.equals("advertising")) {
-    if (adButtonClicked == true) {
-      adRowIdx = yPositionToIndex(mouseY);
-      adColIdx = xPositionToIndex(mouseX);
-      println("CLICKED AT", adRowIdx, adColIdx);
-      putAdvertisement();
+    if (adLayout.adButtonClicked == true) {
+      adLayout.adRowIdx = yPositionToIndex(mouseY);
+      adLayout.adColIdx = xPositionToIndex(mouseX);
+      println("CLICKED AT", adLayout.adRowIdx, adLayout.adColIdx);
+      adLayout.putAdvertisement();
     }
   }
 }

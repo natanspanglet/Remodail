@@ -235,9 +235,9 @@ class Person { //<>//
       int visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
 
       if (checkValidRectangle(visionDirectionRow, visionDirectionCol) == true) {
-        if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("busStop")) {
+        if (adLayout.cityLayout[visionDirectionRow][visionDirectionCol].adType.equals("busStop")) {
           println("VIEWING BUS STOP ADVERTISEMENT");
-        } else if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("billboard")) {
+        } else if (adLayout.cityLayout[visionDirectionRow][visionDirectionCol].adType.equals("billboard")) {
           println("VIEWING BILLBOARD ADVERTISEMENT");
         }
       }

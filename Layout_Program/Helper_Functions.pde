@@ -47,14 +47,6 @@ void generatePopulation() {
   }
 }
 
-void generateAdLayout() {
-  adLayout = new Advertisement[layout.numCityRows][layout.numCityCols];
-  for (int i = 0; i < layout.numCityRows; i++) {
-    for (int j = 0; j < layout.numCityCols; j++) {
-      adLayout[i][j] = new Advertisement("none", 0);
-    }
-  }
-}
 int[][] shuffleAdjDirectionArray() {
   shuffleIndexes.shuffle();
   int[][] shuffledAdjDirections = new int[4][2];
@@ -64,17 +56,6 @@ int[][] shuffleAdjDirectionArray() {
   return shuffledAdjDirections;
 }  
 
-void putAdvertisement() {
-  if (layout.cityLayout[adRowIdx][adColIdx] == 2) {
-    adLayout[adRowIdx][adColIdx].adType = placeAdType;
-  } else if (layout.cityLayout[adRowIdx][adColIdx] == 4) {
-    adLayout[adRowIdx][adColIdx].adType = placeAdType;
-  }
-  
-  if (placeAdType.equals("none")) {
-    adLayout[adRowIdx][adColIdx].adType = placeAdType;
-  }
-}
 
 
 

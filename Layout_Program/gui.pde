@@ -28,7 +28,7 @@ public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlid
   population = new Person[0];
   
   // generate new AdLayout
-  generateAdLayout();
+  adLayout = new AdvertisementLayout(rows, cols);
   
   colSpacing = width / layout.numCityCols;
 
@@ -56,7 +56,7 @@ public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837
   population = new Person[0];
   
   // making new Ad layout
-  generateAdLayout();
+  adLayout = new AdvertisementLayout(rows, cols);
   
   rowSpacing = height / layout.numCityRows;
 
@@ -189,19 +189,19 @@ public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackB
 } //_CODE_:adBackButton:980623:
 
 public void placeBillboardClicked(GButton source, GEvent event) { //_CODE_:placeBillboard:385568:
-  adButtonClicked = true;
-  placeAdType = "billboard";
+  adLayout.adButtonClicked = true;
+  adLayout.placeAdType = "billboard";
   
 } //_CODE_:placeBillboard:385568:
 
 public void placeBusStopClicked(GButton source, GEvent event) { //_CODE_:placeBusStop:211977:
-  adButtonClicked = true;
-  placeAdType = "busStop";
+  adLayout.adButtonClicked = true;
+  adLayout.placeAdType = "busStop";
 } //_CODE_:placeBusStop:211977:
 
 public void deleteAdClicked(GButton source, GEvent event) { //_CODE_:deleteAd:669066:
-  adButtonClicked = true;
-  placeAdType = "none";
+  adLayout.adButtonClicked = true;
+  adLayout.placeAdType = "none";
 } //_CODE_:deleteAd:669066:
 
 
