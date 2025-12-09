@@ -108,8 +108,11 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
   if (layout.storeplaced) {
     screenType = "display";
     generatePopulation();
+    
     userControl.setVisible(false);
     displayControl.setVisible(true);
+    advertisingControl.setVisible(false);
+    
     layout.buttonClicked = false;
   }
   else{
@@ -160,9 +163,20 @@ public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:4
   println("weatherType - GDropList >> GEvent." + event + " @ " + millis());
 } //_CODE_:weatherType:423305:
 
+public void placeAdvertisementClicked(GButton source, GEvent event) { //_CODE_:placeAdvertisement:444896:
+  screenType = "advertising";
+  userControl.setVisible(false);
+  displayControl.setVisible(false);
+  advertisingControl.setVisible(true);
+} //_CODE_:placeAdvertisement:444896:
+
 public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
   println("timer1 - GTimer >> an event occured @ " + millis());
 } //_CODE_:timer1:500679:
+
+synchronized public void advertisingControls(PApplet appc, GWinData data) { //_CODE_:advertisingControl:761879:
+  appc.background(230);
+} //_CODE_:advertisingControl:761879:
 
 
 
@@ -172,7 +186,7 @@ public void createGUI(){
   G4P.messagesEnabled(false);
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
-  surface.setTitle("Sketch Window");
+  surface.setTitle("Remodail");
   userControl = GWindow.getWindow(this, "userControls", 0, 0, 300, 350, JAVA2D);
   userControl.noLoop();
   userControl.setActionOnClose(G4P.KEEP_OPEN);
@@ -240,16 +254,16 @@ public void createGUI(){
   popLabel = new GLabel(userControl, 160, 124, 137, 20);
   popLabel.setText("Change Population Size");
   popLabel.setOpaque(false);
-  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 150, 200, JAVA2D);
+  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 300, 350, JAVA2D);
   displayControl.noLoop();
   displayControl.setActionOnClose(G4P.KEEP_OPEN);
   displayControl.addDrawHandler(this, "displayControls");
-  displayLabel = new GLabel(displayControl, 15, 4, 118, 20);
+  displayLabel = new GLabel(displayControl, 75, 4, 150, 20);
   displayLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   displayLabel.setText("Display Controls");
   displayLabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   displayLabel.setOpaque(false);
-  weatherQ = new GLabel(displayControl, -1, 27, 146, 50);
+  weatherQ = new GLabel(displayControl, 75, 30, 150, 50);
   weatherQ.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   weatherQ.setText("What will the weather be like in the city?");
   weatherQ.setOpaque(false);
@@ -257,12 +271,21 @@ public void createGUI(){
   WeatherType = new GToggleGroup();
   togGroup2 = new GToggleGroup();
   togGroup3 = new GToggleGroup();
-  weatherType = new GDropList(displayControl, 27, 71, 90, 80, 3, 10);
+  weatherType = new GDropList(displayControl, 75, 80, 150, 120, 3, 10);
   weatherType.setItems(loadStrings("list_423305"), 0);
   weatherType.addEventHandler(this, "weatherPick");
+  placeAdvertisement = new GButton(displayControl, 75, 275, 150, 50);
+  placeAdvertisement.setText("Place Advertisement");
+  placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
+  placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
   timer1 = new GTimer(this, this, "timer1_Action1", 1000);
+  advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 240, 120, JAVA2D);
+  advertisingControl.noLoop();
+  advertisingControl.setActionOnClose(G4P.KEEP_OPEN);
+  advertisingControl.addDrawHandler(this, "advertisingControls");
   userControl.loop();
   displayControl.loop();
+  advertisingControl.loop();
 }
 
 // Variable declarations 
@@ -291,4 +314,6 @@ GToggleGroup WeatherType;
 GToggleGroup togGroup2; 
 GToggleGroup togGroup3; 
 GDropList weatherType; 
+GButton placeAdvertisement; 
 GTimer timer1; 
+GWindow advertisingControl;

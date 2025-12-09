@@ -6,6 +6,7 @@ class Advertisement{
     this.adType = ad;
     this.effectiveness = e;
     
+    
   }
   
 }

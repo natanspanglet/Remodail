@@ -48,8 +48,12 @@ class Weather {
     p.z--;      
 
     if (p.z <= 0) {
-      //Removes the particle from the screen 
-      particles.remove(i); 
+      try {
+        //Removes the particle from the screen 
+        particles.remove(i); 
+      } catch (ConcurrentModificationException e) {
+        println("ERROR AT WEATHER CLASS");
+      }
     }
   }
 }

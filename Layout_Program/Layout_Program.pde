@@ -1,12 +1,13 @@
 // Need G4P library
 import g4p_controls.*;
+import java.util.ConcurrentModificationException;
 
 //Creating a layout
 Layout layout;
 float rowSpacing;
 float colSpacing;
 
-String screenType;
+String screenType; // building, display, advertising
 float carSize;
 
 Weather weather;
@@ -47,6 +48,8 @@ int[][] adjDirection = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 int[][] visionDirection = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 
 Advertisement[][] adLayout;
+boolean adButtonClicked = false;
+int adRowIdx, adColIdx;
 
 //Screen size will be 800 by 600
 void setup() {
@@ -56,6 +59,7 @@ void setup() {
   
   //Makes sure the display pops up after submit button 
   displayControl.setVisible(false);
+  advertisingControl.setVisible(false);
   populationNum.setEnabled(true);
   
   populationNumber = 20;
@@ -105,12 +109,23 @@ void draw() {
 //If the user clicks their mouse, and they are in "editing mode" for planning, and they clicked within the grid:
 //Call the Layout's function that enters the user's input into the 2-D array
 void mouseClicked() {
-  if (layout.buttonClicked == true && mouseX >= layout.leftBound && mouseX < layout.rightBound && mouseY >= layout.upBound   && mouseY < layout.lowBound) {
-    layout.colIndex = int((mouseX - layout.leftBound) / layout.cellWidth);
-    layout.rowIndex = int((mouseY - layout.upBound) / layout.cellHeight);
-
-    layout.putStructure();
+  if (screenType.equals("building")) {
+    if (layout.buttonClicked == true && mouseX >= layout.leftBound && mouseX < layout.rightBound && mouseY >= layout.upBound   && mouseY < layout.lowBound) {
+      layout.colIndex = int((mouseX - layout.leftBound) / layout.cellWidth);
+      layout.rowIndex = int((mouseY - layout.upBound) / layout.cellHeight);
+  
+      layout.putStructure();
+    }
+  
   }
+  //else if (screenType.equals("advertising")) {
+  //  if (adButtonClicked == true) {
+  //    adRowIdx = yPositionToIndex(mouseY);
+  //    adColIdx = xPositionToIndex(mouseX);
+  //    println("CLICKED AT", adRowIdx, adColIdx);
+  //    //putAdvertisement();
+  //  }
+  //}
 }
 
 //A function that allows the user to pause the planning process

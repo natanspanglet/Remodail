@@ -64,6 +64,14 @@ int[][] shuffleAdjDirectionArray() {
   return shuffledAdjDirections;
 }
 
+void putAdvertisement() {
+  if (layout.cityLayout[adRowIdx][adColIdx] == 2) {
+    adLayout[adRowIdx][adColIdx].adType = "busstop";
+  } else if (layout.cityLayout[adRowIdx][adColIdx] == 4) {
+    adLayout[adRowIdx][adColIdx].adType = "busstop";
+  }
+}
+
 
 
 //void generateCars(){
