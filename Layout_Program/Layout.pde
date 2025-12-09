@@ -67,18 +67,21 @@ class Layout {
 
   void drawGrid() {
     //Code for drawing the lines goes here
-    //Vertical lines drawn here
-    for (int f = 0; f < this.numCityCols + 1; f ++) {
-      stroke(255);
-      strokeWeight(2);
-      line(this.vertCoords[f], this.upBound, this.vertCoords[f], this.lowBound);
-    }
-
-    //Horizontal lines drawn here
-    for (int f = 0; f < this.numCityRows + 1; f ++) {
-      stroke(255);
-      strokeWeight(2);
-      line(this.leftBound, this.horzCoords[f], this.rightBound, this.horzCoords[f]);
+    
+    if (screenType.equals("building")) {
+      //Vertical lines drawn here
+      for (int f = 0; f < this.numCityCols + 1; f ++) {
+        stroke(255);
+        strokeWeight(2);
+        line(this.vertCoords[f], this.upBound, this.vertCoords[f], this.lowBound);
+      }
+  
+      //Horizontal lines drawn here
+      for (int f = 0; f < this.numCityRows + 1; f ++) {
+        stroke(255);
+        strokeWeight(2);
+        line(this.leftBound, this.horzCoords[f], this.rightBound, this.horzCoords[f]);
+      }
     }
 
     for (int i = 0; i < this.numCityRows; i ++) {
