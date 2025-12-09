@@ -62,13 +62,17 @@ int[][] shuffleAdjDirectionArray() {
     shuffledAdjDirections[i] = adjDirection[ shuffleIndexes.get(i) ];
   }
   return shuffledAdjDirections;
-}
+}  
 
 void putAdvertisement() {
   if (layout.cityLayout[adRowIdx][adColIdx] == 2) {
-    adLayout[adRowIdx][adColIdx].adType = "busstop";
+    adLayout[adRowIdx][adColIdx].adType = placeAdType;
   } else if (layout.cityLayout[adRowIdx][adColIdx] == 4) {
-    adLayout[adRowIdx][adColIdx].adType = "busstop";
+    adLayout[adRowIdx][adColIdx].adType = placeAdType;
+  }
+  
+  if (placeAdType.equals("none")) {
+    adLayout[adRowIdx][adColIdx].adType = placeAdType;
   }
 }
 

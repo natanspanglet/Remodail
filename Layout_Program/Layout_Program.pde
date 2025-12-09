@@ -49,6 +49,7 @@ int[][] visionDirection = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {
 
 Advertisement[][] adLayout;
 boolean adButtonClicked = false;
+String placeAdType = "none";
 int adRowIdx, adColIdx;
 
 //Screen size will be 800 by 600
@@ -117,15 +118,14 @@ void mouseClicked() {
       layout.putStructure();
     }
   
+  } else if (screenType.equals("advertising")) {
+    if (adButtonClicked == true) {
+      adRowIdx = yPositionToIndex(mouseY);
+      adColIdx = xPositionToIndex(mouseX);
+      println("CLICKED AT", adRowIdx, adColIdx);
+      putAdvertisement();
+    }
   }
-  //else if (screenType.equals("advertising")) {
-  //  if (adButtonClicked == true) {
-  //    adRowIdx = yPositionToIndex(mouseY);
-  //    adColIdx = xPositionToIndex(mouseX);
-  //    println("CLICKED AT", adRowIdx, adColIdx);
-  //    //putAdvertisement();
-  //  }
-  //}
 }
 
 //A function that allows the user to pause the planning process

@@ -17,7 +17,7 @@ class Person { //<>//
 
     this.buyUrge = 0;
     this.skinTone = pickRandomSkinTone();
-    this.spottedAdvertisement = true;
+    this.spottedAdvertisement = false;
     this.headingToStore = false;
     this.currentPathIdx = 1;
     this.octant = int((this.personAngle * 8) / TWO_PI);
@@ -235,7 +235,7 @@ class Person { //<>//
       int visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
 
       if (checkValidRectangle(visionDirectionRow, visionDirectionCol) == true) {
-        if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("busstop")) {
+        if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("busStop")) {
           println("VIEWING BUS STOP ADVERTISEMENT");
         } else if (adLayout[visionDirectionRow][visionDirectionCol].adType.equals("billboard")) {
           println("VIEWING BILLBOARD ADVERTISEMENT");

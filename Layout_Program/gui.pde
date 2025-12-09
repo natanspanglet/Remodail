@@ -178,6 +178,32 @@ synchronized public void advertisingControls(PApplet appc, GWinData data) { //_C
   appc.background(230);
 } //_CODE_:advertisingControl:761879:
 
+public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackButton:980623:
+  screenType = "display";
+  
+  generatePopulation();
+  
+  userControl.setVisible(false);
+  displayControl.setVisible(true);
+  advertisingControl.setVisible(false);
+} //_CODE_:adBackButton:980623:
+
+public void placeBillboardClicked(GButton source, GEvent event) { //_CODE_:placeBillboard:385568:
+  adButtonClicked = true;
+  placeAdType = "billboard";
+  
+} //_CODE_:placeBillboard:385568:
+
+public void placeBusStopClicked(GButton source, GEvent event) { //_CODE_:placeBusStop:211977:
+  adButtonClicked = true;
+  placeAdType = "busStop";
+} //_CODE_:placeBusStop:211977:
+
+public void deleteAdClicked(GButton source, GEvent event) { //_CODE_:deleteAd:669066:
+  adButtonClicked = true;
+  placeAdType = "none";
+} //_CODE_:deleteAd:669066:
+
 
 
 // Create all the GUI controls. 
@@ -279,10 +305,30 @@ public void createGUI(){
   placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
   timer1 = new GTimer(this, this, "timer1_Action1", 1000);
-  advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 240, 120, JAVA2D);
+  advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 300, 350, JAVA2D);
   advertisingControl.noLoop();
-  advertisingControl.setActionOnClose(G4P.KEEP_OPEN);
+  advertisingControl.setActionOnClose(G4P.CLOSE_WINDOW);
   advertisingControl.addDrawHandler(this, "advertisingControls");
+  adBackButton = new GButton(advertisingControl, 15, 300, 100, 40);
+  adBackButton.setText("Back");
+  adBackButton.setLocalColorScheme(GCScheme.RED_SCHEME);
+  adBackButton.addEventHandler(this, "adBackButtonClicked");
+  placeBillboard = new GButton(advertisingControl, 100, 80, 100, 40);
+  placeBillboard.setText("Billboard");
+  placeBillboard.addEventHandler(this, "placeBillboardClicked");
+  label1 = new GLabel(advertisingControl, 75, 25, 150, 30);
+  label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label1.setText("Advertisement Type");
+  label1.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  label1.setOpaque(false);
+  placeBusStop = new GButton(advertisingControl, 100, 150, 100, 40);
+  placeBusStop.setText("Bus Stop");
+  placeBusStop.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
+  placeBusStop.addEventHandler(this, "placeBusStopClicked");
+  deleteAd = new GButton(advertisingControl, 100, 220, 100, 40);
+  deleteAd.setText("Delete");
+  deleteAd.setLocalColorScheme(GCScheme.RED_SCHEME);
+  deleteAd.addEventHandler(this, "deleteAdClicked");
   userControl.loop();
   displayControl.loop();
   advertisingControl.loop();
@@ -317,3 +363,8 @@ GDropList weatherType;
 GButton placeAdvertisement; 
 GTimer timer1; 
 GWindow advertisingControl;
+GButton adBackButton; 
+GButton placeBillboard; 
+GLabel label1; 
+GButton placeBusStop; 
+GButton deleteAd; 

@@ -68,7 +68,7 @@ class Layout {
   void drawGrid() {
     //Code for drawing the lines goes here
     
-    if (screenType.equals("building")) {
+    if (screenType.equals("building") || screenType.equals("advertising")) {
       //Vertical lines drawn here
       for (int f = 0; f < this.numCityCols + 1; f ++) {
         stroke(255);
