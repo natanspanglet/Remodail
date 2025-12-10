@@ -32,18 +32,18 @@ void generatePopulation() {
   population = new Person[populationNumber];
   for (int i = 0; i < population.length; i++) {
     
-    boolean validPlacement = false;
+    boolean personValidPlacement = false;
     PVector p = new PVector(0, 0);
-    
-    while (validPlacement == false) {
+
+    while (personValidPlacement == false) {
       p = new PVector(int(random(0, width)), int(random(0, height)));
-      validPlacement = validPlacement(p, 0);
+      personValidPlacement = validPlacement(p, 0);
     }
     
     float angle = random(0, TWO_PI);
     float speed = random(1.2, 3.5);
     PVector v = new PVector(speed*cos(angle), speed*sin(angle));
-    population[i] = new Person(p, v, speed, 10, 10, angle);
+    population[i] = new Person(p, v, speed, int(random(100, 1000000)), angle);
   }
 }
 

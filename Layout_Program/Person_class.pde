@@ -7,11 +7,10 @@ class Person { //<>//
   int[] nextPathRectangle;
   int currentPathIdx, nextPathRow, nextPathCol, octant, personRowIdx, personColIdx, visionDirectionRow, visionDirectionCol, adFrameCounter;
 
-  Person(PVector p, PVector v, float s, float vR, float m, float pA) {
+  Person(PVector p, PVector v, float s, float m, float pA) {
     this.pos = p;
     this.vel = v;
     this.speed = s;
-    this.visionRadius = vR;
     this.money = m;
     this.personAngle = pA;
 
@@ -175,6 +174,33 @@ class Person { //<>//
     
     return addBuyUrge;
   }
+  
+  // RESETTING ALL OF THE FIELDS OF THE PERSON, WHICH RESETS THE PERSON ENTIRELY
+  void resetPerson() {
+    boolean personValidPlacement = false;
+    PVector p = new PVector(0, 0);
+    
+    while (personValidPlacement == false) {
+      p = new PVector(int(random(0, width)), int(random(0, height)));
+      personValidPlacement = validPlacement(p, 0);
+    }
+    
+    this.pos = p;
+    this.personAngle = random(0, TWO_PI);
+    this.speed = random(1.2, 3.5);
+    this.money = int(random(100, 1000000));
+    this.vel = new PVector(this.speed*cos(this.personAngle), speed*sin(this.personAngle));
+    
+    this.buyUrge = 0;
+    this.skinTone = pickRandomSkinTone();
+    this.spottedAdvertisement = false;
+    this.headingToStore = false;
+    this.currentPathIdx = 1;
+    this.octant = int((this.personAngle * 8) / TWO_PI);
+    this.personRowIdx = yPositionToIndex(this.pos.y);
+    this.personColIdx = xPositionToIndex(this.pos.x);
+    this.adFrameCounter = 0;
+  }
 
   void move() {
     // First check if a person has already spotted an advertisement
@@ -236,11 +262,14 @@ class Person { //<>//
 
         // If the person is at the next path, update on where the person should go next
         this.currentPathIdx++;
-
+        
+        // If the person has yet to reach the store, then find the next tile to go to in the pathToStore array. Otherwise, we are at the store, and we reset the person
         if (this.currentPathIdx < this.pathToStore.size()) {
           this.nextPathRectangle = this.pathToStore.get(currentPathIdx);
           this.nextPathRow = this.nextPathRectangle[0];
           this.nextPathCol = this.nextPathRectangle[1];
+        } else {
+          this.resetPerson();
         }
       }
     }
