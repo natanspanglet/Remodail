@@ -170,26 +170,6 @@ public void placeAdvertisementClicked(GButton source, GEvent event) { //_CODE_:p
   advertisingControl.setVisible(true);
 } //_CODE_:placeAdvertisement:444896:
 
-public void hourChanged(GCustomSlider source, GEvent event) { //_CODE_:hourControl:478826:
-  valiDate(hourControl.getValueI(), yearControl.getValueI(), monthControl.getValueI(), dayControl.getValueI());
-  println("hourControl - GCustomSlider >> GEvent." + event + " @ " + millis());
-} //_CODE_:hourControl:478826:
-
-public void dayChanged(GCustomSlider source, GEvent event) { //_CODE_:dayControl:708092:
-  valiDate(hourControl.getValueI(), yearControl.getValueI(), monthControl.getValueI(), dayControl.getValueI());
-  println("custom_slider2 - GCustomSlider >> GEvent." + event + " @ " + millis());
-} //_CODE_:dayControl:708092:
-
-public void monthChanged(GCustomSlider source, GEvent event) { //_CODE_:monthControl:682064:
-  valiDate(hourControl.getValueI(), yearControl.getValueI(), monthControl.getValueI(), dayControl.getValueI());
-  println("custom_slider3 - GCustomSlider >> GEvent." + event + " @ " + millis());
-} //_CODE_:monthControl:682064:
-
-public void yearChanged(GCustomSlider source, GEvent event) { //_CODE_:yearControl:993826:
-  valiDate(hourControl.getValueI(), yearControl.getValueI(), monthControl.getValueI(), dayControl.getValueI());
-  println("custom_slider4 - GCustomSlider >> GEvent." + event + " @ " + millis());
-} //_CODE_:yearControl:993826:
-
 public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
   println("timer1 - GTimer >> an event occured @ " + millis());
 } //_CODE_:timer1:500679:
@@ -326,34 +306,6 @@ public void createGUI(){
   placeAdvertisement.setText("Place Advertisement");
   placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
-  hourControl = new GCustomSlider(displayControl, 30, 135, 100, 40, "grey_blue");
-  hourControl.setShowValue(true);
-  hourControl.setShowLimits(true);
-  hourControl.setLimits(10, 0, 23);
-  hourControl.setNumberFormat(G4P.INTEGER, 0);
-  hourControl.setOpaque(false);
-  hourControl.addEventHandler(this, "hourChanged");
-  dayControl = new GCustomSlider(displayControl, 160, 135, 100, 40, "grey_blue");
-  dayControl.setShowValue(true);
-  dayControl.setTextOrientation(G4P.ORIENT_LEFT);
-  dayControl.setLimits(4, 1, 31);
-  dayControl.setNumberFormat(G4P.INTEGER, 0);
-  dayControl.setOpaque(false);
-  dayControl.addEventHandler(this, "dayChanged");
-  monthControl = new GCustomSlider(displayControl, 29, 207, 100, 40, "grey_blue");
-  monthControl.setShowValue(true);
-  monthControl.setShowLimits(true);
-  monthControl.setLimits(12, 1, 12);
-  monthControl.setNumberFormat(G4P.INTEGER, 0);
-  monthControl.setOpaque(false);
-  monthControl.addEventHandler(this, "monthChanged");
-  yearControl = new GCustomSlider(displayControl, 161, 208, 100, 40, "grey_blue");
-  yearControl.setShowValue(true);
-  yearControl.setShowLimits(true);
-  yearControl.setLimits(2025, 2025, 2042);
-  yearControl.setNumberFormat(G4P.INTEGER, 0);
-  yearControl.setOpaque(false);
-  yearControl.addEventHandler(this, "yearChanged");
   timer1 = new GTimer(this, this, "timer1_Action1", 1000);
   advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 300, 350, JAVA2D);
   advertisingControl.noLoop();
@@ -411,10 +363,6 @@ GToggleGroup togGroup2;
 GToggleGroup togGroup3; 
 GDropList weatherType; 
 GButton placeAdvertisement; 
-GCustomSlider hourControl; 
-GCustomSlider dayControl; 
-GCustomSlider monthControl; 
-GCustomSlider yearControl; 
 GTimer timer1; 
 GWindow advertisingControl;
 GButton adBackButton; 
