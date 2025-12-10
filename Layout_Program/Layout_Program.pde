@@ -109,6 +109,13 @@ void draw() {
     if (weatherChosen){
       weather.update();
     }
+    
+    fill(255);
+    String storeRevenueText = "Your Store Revenue: $" + storeRevenue;
+
+    text(storeRevenueText, 600, 500);
+    
+    
   }
 }
 

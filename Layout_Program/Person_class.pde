@@ -1,4 +1,4 @@
-class Person { //<>//
+class Person { //<>// //<>//
   PVector pos, vel;
   float visionRadius, money, buyUrge, speed, personAngle;
   color skinTone;
@@ -151,19 +151,34 @@ class Person { //<>//
 
     return generatedPath;
   }
-
+   
+  // Method to get the index of which tile the person is currently seeing.
   int getVisionDirectionIndex() {
+    /*
+      Grid is broken up into octants. Each ray refers to one of the rays of the octant diagram:
+      \|/ <-- ray
+      ---
+      /|\ <-- ray
+       ^
+       |
+       ray
+       etc.
+    */
+    
     float rayOne = this.octant * (HALF_PI/2);
     float rayTwo = (this.octant + 1) * (HALF_PI/2);
+    
+    // Diff is used to determine which ray is closer to the angle the person is currently looking at. Whichever ray is closer will be used to determine which tile the person is looking at
     float diffOne = abs(this.personAngle - rayOne);
     float diffTwo = abs(this.personAngle - rayTwo);
     if (diffOne <= diffTwo) {
       return octant;
     } else {
-      return (octant + 1) % 8;
+      return (octant + 1) % 8; // Mod by 8 because octant + 1 can return 7, and 7 + 1 = 8, which will result in an error.
     }
   }
   
+  // Method to calculate the buy urge as the person continuously looks at the advertisement.
   float calculateBuyUrge() {
     float addBuyUrge = adLayout.cityLayout[this.visionDirectionRow][this.visionDirectionCol].effectiveness;
     
@@ -256,12 +271,16 @@ class Person { //<>//
           }
         
         } else {
+          
+          // If the person gets tired of seeing the advertisement (2 seconds), then make the person leave the advertisement grounds and reset the values associated with it.
           if (this.adFrameCounter >= 60) {
             this.spottedAdvertisement = false;
             this.adFrameCounter = 0;
             this.buyUrge = random(0, 0.5);
             
           } else {
+            
+            // The buyUrge of the person will increase as they continue to stare at the advertisement,
             this.buyUrge += this.calculateBuyUrge();
           }
           
@@ -296,7 +315,6 @@ class Person { //<>//
             storeRevenue += random(100, 1000);
           }
           storeRevenue = roundAny(storeRevenue, 2);
-          println("Store revenue is now at", storeRevenue);
           
           this.resetPerson();
         }
@@ -336,6 +354,23 @@ class Person { //<>//
           this.spottedAdvertisement = true;
           this.buyUrge = this.calculateBuyUrge();
           
+        } else if (layout.cityLayout[this.visionDirectionRow][this.visionDirectionCol] == 1 && random(0, 100) <= 5) { // If the person sees the store, then make them go into the store at a 5% chance
+          this.headingToStore = true;
+  
+          this.pathToStore = this.findPathToStore();
+  
+          // If there is a valid path to the store, begin going towards it. Else, stay at the same location
+          if (this.pathToStore.size() > 0) {
+            
+            this.nextPathRectangle = this.pathToStore.get(currentPathIdx); // currentPathIdx starts at 1 because the first element (0) is the current position.
+            this.nextPathRow = this.nextPathRectangle[0];
+            this.nextPathCol = this.nextPathRectangle[1];
+            
+          } else {
+            
+            this.nextPathRow = this.personRowIdx;
+            this.nextPathCol = this.personColIdx;
+          }
         }
       }
     }
