@@ -56,7 +56,23 @@ int[][] shuffleAdjDirectionArray() {
   return shuffledAdjDirections;
 }  
 
-
+void valiDate(int hr, int yr, int mn, int dy) {
+  int day = dy;
+  int month = mn;
+  int year = yr;
+  if(day > 28) {
+    if(month == 2 && year % 4 != 0)  day = 28;
+  }
+  if(day > 29) {
+    if(month == 2)  day = 28;
+  }
+  if(day > 30) {
+    if(month == 4 || month == 6 || month == 9 || month == 11)  day = 30;
+  }
+  
+  String hourInput = str(hr) + ":00";
+  theTimes[0] = new Time(hourInput, day, month, year);
+}
 
 
 //void generateCars(){
@@ -65,3 +81,4 @@ int[][] shuffleAdjDirectionArray() {
   
   
 //}
+
