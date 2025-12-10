@@ -257,6 +257,55 @@ class Time {
       i ++;
     }
   }
+
+  int getWeekDay(int d, int m, int y) {
+    //The fixed reference point will be Thursday, December 4, 2025
+    //First initialize variables for the total number of days between the dates as well as the number of leap years and non-leap years between the two years
+    //(not including this year or the user-inputted year)
+    int numDays = 0;
+    int numLeaps = 0;
+    int numNonLeaps = 0;
+    int numYearsBetween = 0;
+    if(y != 2025)  numYearsBetween = abs(y - 2025) - 1;
+    if(y > 2025)  numLeaps = int(abs(y - 2025) / 4.00);
+    else if(y < 2025)  numLeaps = round((2025 - y) / 4.00);
+    numNonLeaps = numYearsBetween - numLeaps;
+    numDays += 366 * numLeaps + 365 * numNonLeaps;
+    
+    //Now account the number of days between the 2 dates that fall within the years of importance
+    //(2 separate cases for whether or not the user-inputted year of importance is 2025)
+    //First, calculate the day of the year (1-365 or 366) on which the user-inputted date falls
+    int mCheck = 0;
+    if(y % 4 == 0) {
+      for(int g = 0; g < m - 1; g ++)  mCheck += daysInMonthLeapYear[g];
+      mCheck += d;
+    }
+    else {
+      for(int g = 0; g < m - 1; g ++)  mCheck += daysInMonthYear[g];
+      mCheck += d;
+    }
+    if(y == 2025) {
+      int weekDaysAfter = (mCheck - 338) % 7;
+      return ((5 + weekDaysAfter + 6) % 7) + 1;
+    }
+    else {
+      if(y < 2025) {
+        if(y % 4 == 0) {
+          numDays += 338 + (366 - mCheck);
+        }
+        else {
+          numDays += 338 + (365 - mCheck);
+        }
+        int weekDaysBefore = numDays % 7;
+        return ((5 - weekDaysBefore + 6) % 7) + 1;
+      }
+      else {
+        numDays += 27 + mCheck;
+        int weekDaysAfter = numDays % 7;
+        return ((5 + weekDaysAfter + 6) % 7) + 1;
+      }
+    }
+  }
   
   void display() {
     fill(0);
