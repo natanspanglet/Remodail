@@ -170,7 +170,26 @@ class Person { //<>//
     if (theTimes[0].isHoliday == true) {
       addBuyUrge += 0.1;
     }
+    
     addBuyUrge += weather.buyEffect;
+    
+    if (this.money <= 50000) {
+      addBuyUrge += 0.01;
+    } else if (this.money <= 250000) {
+      addBuyUrge += 0.02;
+    } else if (this.money <= 500000) {
+      addBuyUrge += 0.03;
+    } else {
+      addBuyUrge += 0.04;
+    }
+    
+    if (storeProductPriceRowNum == 0) {
+      addBuyUrge += 0.02;
+    } else if (storeProductPriceRowNum == 1) {
+      addBuyUrge += 0.01;
+    } else {
+      addBuyUrge -= 0.1;
+    }
     
     return addBuyUrge;
   }
@@ -238,9 +257,9 @@ class Person { //<>//
         
         } else {
           if (this.adFrameCounter >= 60) {
-            println("ADVERTISING DIDN'T WORK", this.personRowIdx, personColIdx);
             this.spottedAdvertisement = false;
             this.adFrameCounter = 0;
+            this.buyUrge = random(0, 0.5);
             
           } else {
             this.buyUrge += this.calculateBuyUrge();
@@ -269,6 +288,16 @@ class Person { //<>//
           this.nextPathRow = this.nextPathRectangle[0];
           this.nextPathCol = this.nextPathRectangle[1];
         } else {
+          if (storeProductPriceRowNum == 0) {
+            storeRevenue += random(0, 49);
+          } else if (storeProductPriceRowNum == 1) {
+            storeRevenue += random(50, 99);
+          } else {
+            storeRevenue += random(100, 1000);
+          }
+          storeRevenue = roundAny(storeRevenue, 2);
+          println("Store revenue is now at", storeRevenue);
+          
           this.resetPerson();
         }
       }

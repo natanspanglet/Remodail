@@ -83,19 +83,19 @@ public void buildingButton(GButton source, GEvent event) { //_CODE_:buildButton:
 public void busstopButton(GButton source, GEvent event) { //_CODE_:busButton:942668:
   layout.structureType = 2;
   layout.buttonClicked = true;
-  println("Building mode selected");
+  println("Bus Stop mode selected");
 } //_CODE_:busButton:942668:
 
 public void mystoreButton(GButton source, GEvent event) { //_CODE_:storeButton:224962:
   layout.structureType = 1;
   layout.buttonClicked = true;
-  println("Building mode selected");
+  println("Store mode selected");
 } //_CODE_:storeButton:224962:
 
 public void roadsButton(GButton source, GEvent event) { //_CODE_:roadButton:708872:
   layout.structureType = 3;
   layout.buttonClicked = true;
-  println("Building mode selected");
+  println("Road mode selected");
 } //_CODE_:roadButton:708872:
 
 public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
@@ -141,7 +141,6 @@ public void NameofStore(GTextField source, GEvent event) { //_CODE_:storeName:45
 
 public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:populationNum:692818:
   populationNumber = populationNum.getValueI();
-  println("populationNum - GCustomSlider >> GEvent." + event + " @ " + millis());
 } //_CODE_:populationNum:692818:
 
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
@@ -169,6 +168,10 @@ public void placeAdvertisementClicked(GButton source, GEvent event) { //_CODE_:p
   displayControl.setVisible(false);
   advertisingControl.setVisible(true);
 } //_CODE_:placeAdvertisement:444896:
+
+public void storeProductPriceClicked(GDropList source, GEvent event) { //_CODE_:storeProductPrice:520426:
+  println("storeProductPrice - GDropList >> GEvent." + event + " @ " + millis());
+} //_CODE_:storeProductPrice:520426:
 
 public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
   println("timer1 - GTimer >> an event occured @ " + millis());
@@ -225,6 +228,7 @@ public void createGUI(){
   usercontrols.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
   usercontrols.setOpaque(false);
   colSlider = new GCustomSlider(userControl, 14, 72, 100, 40, "red_yellow18px");
+  colSlider.setShowValue(true);
   colSlider.setLimits(12, 5, 20);
   colSlider.setNumberFormat(G4P.INTEGER, 0);
   colSlider.setLocalColorScheme(GCScheme.RED_SCHEME);
@@ -236,6 +240,7 @@ public void createGUI(){
   collabel.setLocalColorScheme(GCScheme.RED_SCHEME);
   collabel.setOpaque(false);
   rSlider = new GCustomSlider(userControl, 161, 71, 100, 40, "blue18px");
+  rSlider.setShowValue(true);
   rSlider.setLimits(7, 5, 20);
   rSlider.setNumberFormat(G4P.INTEGER, 0);
   rSlider.setOpaque(false);
@@ -282,7 +287,7 @@ public void createGUI(){
   popLabel = new GLabel(userControl, 160, 124, 137, 20);
   popLabel.setText("Change Population Size");
   popLabel.setOpaque(false);
-  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 300, 350, JAVA2D);
+  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 300, 400, JAVA2D);
   displayControl.noLoop();
   displayControl.setActionOnClose(G4P.KEEP_OPEN);
   displayControl.addDrawHandler(this, "displayControls");
@@ -299,13 +304,22 @@ public void createGUI(){
   WeatherType = new GToggleGroup();
   togGroup2 = new GToggleGroup();
   togGroup3 = new GToggleGroup();
-  weatherType = new GDropList(displayControl, 75, 80, 150, 120, 3, 10);
+  weatherType = new GDropList(displayControl, 75, 80, 150, 80, 3, 10);
   weatherType.setItems(loadStrings("list_423305"), 0);
   weatherType.addEventHandler(this, "weatherPick");
-  placeAdvertisement = new GButton(displayControl, 75, 275, 150, 50);
+  placeAdvertisement = new GButton(displayControl, 75, 325, 150, 50);
   placeAdvertisement.setText("Place Advertisement");
   placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
+  storeProductPrice = new GDropList(displayControl, 75, 210, 150, 80, 3, 10);
+  storeProductPrice.setItems(loadStrings("list_520426"), 0);
+  storeProductPrice.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  storeProductPrice.addEventHandler(this, "storeProductPriceClicked");
+  storeProductPriceLabel = new GLabel(displayControl, 75, 160, 150, 50);
+  storeProductPriceLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  storeProductPriceLabel.setText("What is the average price of product in your store?");
+  storeProductPriceLabel.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  storeProductPriceLabel.setOpaque(false);
   timer1 = new GTimer(this, this, "timer1_Action1", 1000);
   advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 300, 350, JAVA2D);
   advertisingControl.noLoop();
@@ -363,6 +377,8 @@ GToggleGroup togGroup2;
 GToggleGroup togGroup3; 
 GDropList weatherType; 
 GButton placeAdvertisement; 
+GDropList storeProductPrice; 
+GLabel storeProductPriceLabel; 
 GTimer timer1; 
 GWindow advertisingControl;
 GButton adBackButton; 

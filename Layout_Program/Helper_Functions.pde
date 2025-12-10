@@ -27,6 +27,11 @@ boolean validPlacement(PVector p, int check) {
   }
 }
 
+float roundAny(float x, int d) {
+  x =  round(x * pow(10, d));
+  return x / pow(10, d);
+}
+
 // Helper function to generate a new population each time the slider is changed
 void generatePopulation() {
   population = new Person[populationNumber];

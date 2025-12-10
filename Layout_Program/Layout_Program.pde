@@ -6,6 +6,10 @@ import java.util.ConcurrentModificationException;
 Layout layout;
 float rowSpacing;
 float colSpacing;
+int rows = 7;
+int cols = 12;
+int storeProductPriceRowNum = 0;
+float storeRevenue = 0;
 
 String screenType; // building, display, advertising
 float carSize;
@@ -36,9 +40,6 @@ color[] skinTones = {
   color(255, 206, 180)
 };
 
-int rows = 7;
-int cols = 12;
-
 Time[] theTimes = new Time[1];
 String[] mostHolidays;
 
@@ -62,8 +63,7 @@ void setup() {
   displayControl.setVisible(false);
   advertisingControl.setVisible(false);
   populationNum.setEnabled(true);
-  weatherType.setSelected(0);
-  
+ 
   weather = new Weather("sunny");
   
   populationNumber = 20;
@@ -127,7 +127,7 @@ void mouseClicked() {
     if (adLayout.adButtonClicked == true) {
       adLayout.adRowIdx = yPositionToIndex(mouseY);
       adLayout.adColIdx = xPositionToIndex(mouseX);
-      println("CLICKED AT", adLayout.adRowIdx, adLayout.adColIdx);
+
       adLayout.putAdvertisement();
     }
   }
