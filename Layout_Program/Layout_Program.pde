@@ -11,7 +11,8 @@ String screenType; // building, display, advertising
 float carSize;
 
 Weather weather;
-boolean weatherChosen;
+boolean weatherChosen = true;
+int weatherRowNum = 0;
 
 Person[] population;
 int populationNumber;
@@ -34,7 +35,6 @@ color[] skinTones = {
   color(255, 195, 170),
   color(255, 206, 180)
 };
-
 
 int rows = 7;
 int cols = 12;
@@ -62,6 +62,9 @@ void setup() {
   displayControl.setVisible(false);
   advertisingControl.setVisible(false);
   populationNum.setEnabled(true);
+  weatherType.setSelected(0);
+  
+  weather = new Weather("sunny");
   
   populationNumber = 20;
   
@@ -86,6 +89,7 @@ void setup() {
 //(the preStructure() function will take care of whether to draw the lighter-shaded square)
 void draw() {
   layout.drawGrid();
+  adLayout.drawGrid();
   if(layout.buttonClicked == true) {
     layout.preStructure();
   }

@@ -1,28 +1,37 @@
 class Weather {
   String weatherType;
   ArrayList<PVector> particles;
-  int spawnRate = 2;  // how many particles appear per frame
-  int maxParticles = 200;
-  float life; 
+  int spawnRate, maxParticles;
+  float buyEffect, life; 
 
   Weather(String wt) {
     this.weatherType = wt;
+    this.spawnRate = 2;
+    this.maxParticles = 200;
+    
+    if (this.weatherType.equals("raining"))
+      this.buyEffect = -0.02;
+    else if (this.weatherType.equals("sunny"))
+      this.buyEffect = 0.01;
+    else if (this.weatherType.equals("snowing"))
+      this.buyEffect = -0.01;
+    
     particles = new ArrayList();
   }
 
   void update() {
-    if (weatherType.equals("raining"))
+    if (this.weatherType.equals("raining"))
       rain();
-    else if (weatherType.equals("sunny"))
+    else if (this.weatherType.equals("sunny"))
       sunny();
-    else if (weatherType.equals("snowing"))
+    else if (this.weatherType.equals("snowing"))
       snow();
    removeOldParticles();
   }
 
   void spawnParticles() {
     // Only spawn particles until we reach maxParticles
-    for (int i = 0; i < spawnRate && particles.size() < maxParticles; i++) {
+    for (int i = 0; i < this.spawnRate && particles.size() < this.maxParticles; i++) {
       float x = random(width);
       float y = random(height);
       //How long the particles will stay on screen 
@@ -48,12 +57,7 @@ class Weather {
     p.z--;      
 
     if (p.z <= 0) {
-      try {
-        //Removes the particle from the screen 
-        particles.remove(i); 
-      } catch (ConcurrentModificationException e) {
-        println("ERROR AT WEATHER CLASS");
-      }
+      particles.remove(i); 
     }
   }
 }

@@ -5,7 +5,7 @@ class Person { //<>//
   boolean spottedAdvertisement, headingToStore;
   ArrayList<int[]> pathToStore;
   int[] nextPathRectangle;
-  int currentPathIdx, nextPathRow, nextPathCol, octant, personRowIdx, personColIdx;
+  int currentPathIdx, nextPathRow, nextPathCol, octant, personRowIdx, personColIdx, visionDirectionRow, visionDirectionCol, adFrameCounter;
 
   Person(PVector p, PVector v, float s, float vR, float m, float pA) {
     this.pos = p;
@@ -23,6 +23,7 @@ class Person { //<>//
     this.octant = int((this.personAngle * 8) / TWO_PI);
     this.personRowIdx = yPositionToIndex(this.pos.y);
     this.personColIdx = xPositionToIndex(this.pos.x);
+    this.adFrameCounter = 0;
   }
 
   // Method to pick a random skin tone out of the available options specified.
@@ -163,6 +164,17 @@ class Person { //<>//
       return (octant + 1) % 8;
     }
   }
+  
+  float calculateBuyUrge() {
+    float addBuyUrge = adLayout.cityLayout[this.visionDirectionRow][this.visionDirectionCol].effectiveness;
+    
+    if (theTimes[0].isHoliday == true) {
+      addBuyUrge += 0.1;
+    }
+    addBuyUrge += weather.buyEffect;
+    
+    return addBuyUrge;
+  }
 
   void move() {
     // First check if a person has already spotted an advertisement
@@ -174,21 +186,42 @@ class Person { //<>//
         goToRectangle(this.personRowIdx, this.personColIdx);
         this.pos.add(this.vel);
       } else {
-        // Begin the person's journey to find the store
-        this.spottedAdvertisement = false;
-        this.headingToStore = true;
-
-        this.pathToStore = this.findPathToStore();
-
-        // If there is a valid path to the store, begin going towards it. Else, stay at the same location
-        if (this.pathToStore.size() > 0) {
-          this.nextPathRectangle = this.pathToStore.get(currentPathIdx); // currentPathIdx starts at 1 because the first element (0) is the current position.
-          this.nextPathRow = this.nextPathRectangle[0];
-          this.nextPathCol = this.nextPathRectangle[1];
+        
+        this.adFrameCounter++;
+        
+        if (random(0, 100) <= this.buyUrge){
+          
+          // Begin the person's journey to find the store
+          this.spottedAdvertisement = false;
+          this.headingToStore = true;
+  
+          this.pathToStore = this.findPathToStore();
+  
+          // If there is a valid path to the store, begin going towards it. Else, stay at the same location
+          if (this.pathToStore.size() > 0) {
+            
+            this.nextPathRectangle = this.pathToStore.get(currentPathIdx); // currentPathIdx starts at 1 because the first element (0) is the current position.
+            this.nextPathRow = this.nextPathRectangle[0];
+            this.nextPathCol = this.nextPathRectangle[1];
+            
+          } else {
+            
+            this.nextPathRow = this.personRowIdx;
+            this.nextPathCol = this.personColIdx;
+          }
+        
         } else {
-          this.nextPathRow = this.personRowIdx;
-          this.nextPathCol = this.personColIdx;
+          if (this.adFrameCounter >= 60) {
+            println("ADVERTISING DIDN'T WORK", this.personRowIdx, personColIdx);
+            this.spottedAdvertisement = false;
+            this.adFrameCounter = 0;
+            
+          } else {
+            this.buyUrge += this.calculateBuyUrge();
+          }
+          
         }
+        
       }
     }
 
@@ -216,7 +249,7 @@ class Person { //<>//
     if (!spottedAdvertisement && !headingToStore) {
 
       // Changing the direction/heading of the person
-      if (random(100) <= 7) {
+      if (random(100) <= 5) {
         this.personAngle = random(0, TWO_PI);
         this.vel = new PVector(this.speed * cos(this.personAngle), this.speed*sin(this.personAngle));
       }
@@ -231,14 +264,20 @@ class Person { //<>//
 
       // Checking if the person can see an advertisement within the vicinity
       int visionDirectionIndex = this.getVisionDirectionIndex();
-      int visionDirectionRow = this.personRowIdx + visionDirection[visionDirectionIndex][0];
-      int visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
+      this.visionDirectionRow = this.personRowIdx + visionDirection[visionDirectionIndex][0];
+      this.visionDirectionCol = this.personColIdx + visionDirection[visionDirectionIndex][1];
 
-      if (checkValidRectangle(visionDirectionRow, visionDirectionCol) == true) {
-        if (adLayout.cityLayout[visionDirectionRow][visionDirectionCol].adType.equals("busStop")) {
-          println("VIEWING BUS STOP ADVERTISEMENT");
-        } else if (adLayout.cityLayout[visionDirectionRow][visionDirectionCol].adType.equals("billboard")) {
-          println("VIEWING BILLBOARD ADVERTISEMENT");
+      if (checkValidRectangle(this.visionDirectionRow, this.visionDirectionCol) == true) {
+        if (adLayout.cityLayout[this.visionDirectionRow][this.visionDirectionCol].adType.equals("busStop")) {
+          
+          this.spottedAdvertisement = true;
+          this.buyUrge = this.calculateBuyUrge();
+          
+        } else if (adLayout.cityLayout[this.visionDirectionRow][this.visionDirectionCol].adType.equals("billboard")) {
+          
+          this.spottedAdvertisement = true;
+          this.buyUrge = this.calculateBuyUrge();
+          
         }
       }
     }

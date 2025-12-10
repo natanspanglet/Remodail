@@ -149,14 +149,14 @@ synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_
 
 public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305:
 
-  int rowNum = source.getSelectedIndex();
+  weatherRowNum = source.getSelectedIndex();
   
   weatherChosen = true;
-   if (rowNum == 0)
+   if (weatherRowNum == 0)
      weather = new Weather("sunny");
-   else if (rowNum == 1)
+   else if (weatherRowNum == 1)
      weather = new Weather("raining");
-   else if (rowNum == 2)
+   else if (weatherRowNum == 2)
      weather = new Weather("snowing");
    else
      println("error?");
@@ -180,6 +180,8 @@ synchronized public void advertisingControls(PApplet appc, GWinData data) { //_C
 
 public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackButton:980623:
   screenType = "display";
+  adLayout.adButtonClicked = false;
+  adLayout.placeAdType = "none";
   
   generatePopulation();
   
