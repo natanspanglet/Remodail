@@ -18,6 +18,9 @@ Weather weather;
 boolean weatherChosen = true;
 int weatherRowNum = 0;
 
+Car[] cars; 
+int carNum;
+
 Person[] population;
 int populationNumber;
 int personWidth = 20;
@@ -66,6 +69,8 @@ void setup() {
  
   weather = new Weather("sunny");
   
+  carNum = 5;
+  
   populationNumber = 20;
   
   screenType = "building";
@@ -78,7 +83,9 @@ void setup() {
     
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
-  carSize = height / float(rows) - 20;
+  
+  float cellSize = height / (float) rows;   // size of one grid square
+  carSize  = cellSize / 2.0; 
   
   PFont f1 = createFont("Arial", 36);
   textFont(f1);
@@ -109,13 +116,19 @@ void draw() {
     if (weatherChosen){
       weather.update();
     }
+     
+     if (cars == null) {
+      println("CARS IS NULL");
+    }
+    for(Car c: cars) {
+      c.drawCar();
+      c.move();
+    }
     
     fill(255);
     String storeRevenueText = "Your Store Revenue: $" + storeRevenue;
 
     text(storeRevenueText, 600, 500);
-    
-    
   }
 }
 
@@ -151,4 +164,3 @@ void keyPressed() {
   println(layout.cityLayout[1][0]);
   println(layout.cityLayout[5][2]);
 }
-

@@ -2,10 +2,14 @@ class Person { //<>// //<>//
   PVector pos, vel;
   float visionRadius, money, buyUrge, speed, personAngle;
   color skinTone;
-  boolean spottedAdvertisement, headingToStore;
+  boolean spottedAdvertisement, headingToStore, inCar;
   ArrayList<int[]> pathToStore;
   int[] nextPathRectangle;
   int currentPathIdx, nextPathRow, nextPathCol, octant, personRowIdx, personColIdx, visionDirectionRow, visionDirectionCol, adFrameCounter;
+  
+  //Car Stuff 
+  float carPickupThreshold = 0.5; // Buy urge threshold
+  Car targetCar;
 
   Person(PVector p, PVector v, float s, float m, float pA) {
     this.pos = p;
@@ -23,6 +27,7 @@ class Person { //<>// //<>//
     this.personRowIdx = yPositionToIndex(this.pos.y);
     this.personColIdx = xPositionToIndex(this.pos.x);
     this.adFrameCounter = 0;
+    //this.inCar = false; 
   }
 
   // Method to pick a random skin tone out of the available options specified.
@@ -374,6 +379,8 @@ class Person { //<>// //<>//
         }
       }
     }
+    
+    
 
     // Updating the current person's row and column index in the 2D cityLayout array
     this.personRowIdx = yPositionToIndex(this.pos.y);

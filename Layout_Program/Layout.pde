@@ -19,7 +19,7 @@ class Layout {
   int structureType;
   int rowIndex;
   int colIndex;
-  boolean storeplaced;
+  boolean storeplaced, roadplaced;
   String storeName;
   //No store has been placed yet (initializing)
   int storeRow = 0;
@@ -42,6 +42,8 @@ class Layout {
     //Boolean makes sure that the store can only be placed once
     this.storeplaced = false;
     this.storeName = "";
+    
+    this.roadplaced = false;
 
     //Initialize coordinates for individual cells (in effect)
     this.horzCoords = new float[this.numCityRows + 1];
@@ -168,6 +170,10 @@ if (this.cityLayout[i][j] == 1 && this.storeplaced && this.storeName != null) {
       this.cityLayout[this.rowIndex][this.colIndex] = this.structureType;
     }
     }
+    
+    //if(this.structureType ==3){
+    // this.roadplaced = true; 
+    //}
   }
 
   //This is a function that allows the user to see where their mouse is before they click
