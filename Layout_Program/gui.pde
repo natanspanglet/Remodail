@@ -144,7 +144,7 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 } //_CODE_:populationNum:692818:
 
 public void clearButton(GButton source, GEvent event) { //_CODE_:clearLayout:672061:
-  println("clearLayout - GButton >> GEvent." + event + " @ " + millis());
+  //layout.clearGrid();
 } //_CODE_:clearLayout:672061:
 
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
