@@ -391,10 +391,7 @@ class Person { //<>// //<>//
   void drawMe() {
     noStroke();
     fill(this.skinTone);
-    
-    if (this.visible == true) {
-      square(this.pos.x, this.pos.y, 20);
-    }
+    square(this.pos.x, this.pos.y, 20);
     
   }
 }

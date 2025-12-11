@@ -72,7 +72,7 @@ void setup() {
   adLayout = new AdvertisementLayout(layout.numCityRows, layout.numCityCols);
   
   mostHolidays = loadStrings("holidayData.txt");
-  Time theTime = new Time("10:00", 4, 12, 2025);
+  Time theTime = new Time("10:00", 12, 12, 2025);
   theTimes[0] = theTime;
     
   rowSpacing = height / layout.numCityRows;
@@ -88,23 +88,25 @@ void setup() {
 void draw() {
   layout.drawGrid();
   adLayout.drawGrid();
-  if(layout.buttonClicked == true) {
+  if(screenType.equals("building") && layout.buttonClicked == true) {
     layout.preStructure();
   }
-
+  
+  // Drawing everything on the display screen
   if (screenType.equals("display")) {
+    // Displaying the time
     theTimes[0].display();
     theTimes[0].update();
-    println(theTimes[0].hourOfDay);
     
-    if (population == null) {
-      println("POPULATION IS NULL");
-    }
+    // Displaying the population
     for(Person p: population) {
-      p.drawMe();
-      p.move();
+      if (p.visible == true) {
+        p.drawMe();
+        p.move();
+      }
     }
     
+    // Displaying the weather
     if (weatherChosen){
       weather.update();
     }
