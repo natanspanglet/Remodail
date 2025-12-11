@@ -186,6 +186,14 @@ public void storeProductPriceClicked(GDropList source, GEvent event) { //_CODE_:
   println("storeProductPrice - GDropList >> GEvent." + event + " @ " + millis());
 } //_CODE_:storeProductPrice:520426:
 
+public void goToTime(GButton source, GEvent event) { //_CODE_:timeButton:554183:
+  println("timeButton - GButton >> GEvent." + event + " @ " + millis());
+
+  // Hide display controls, show time window
+  displayControl.setVisible(false);
+  timeWindow.setVisible(true);
+} //_CODE_:timeButton:554183:
+
 public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
   println("timer1 - GTimer >> an event occured @ " + millis());
 } //_CODE_:timer1:500679:
@@ -221,6 +229,26 @@ public void deleteAdClicked(GButton source, GEvent event) { //_CODE_:deleteAd:66
   adLayout.adButtonClicked = true;
   adLayout.placeAdType = "none";
 } //_CODE_:deleteAd:669066:
+
+synchronized public void timecontrol(PApplet appc, GWinData data) { //_CODE_:timeWindow:868211:
+  appc.background(230);
+} //_CODE_:timeWindow:868211:
+
+public void inputHours(GTextField source, GEvent event) { //_CODE_:hoursInput:767417:
+  println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:hoursInput:767417:
+
+public void inputDate(GTextField source, GEvent event) { //_CODE_:dateText:617999:
+  println("dateText - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:dateText:617999:
+
+public void goToDisplay(GButton source, GEvent event) { //_CODE_:backButton:370506:
+  println("backButton - GButton >> GEvent." + event + " @ " + millis());
+
+  // Hide time window, show display controls
+  timeWindow.setVisible(false);
+  displayControl.setVisible(true);
+} //_CODE_:backButton:370506:
 
 
 
@@ -262,45 +290,45 @@ public void createGUI(){
   rowlabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   rowlabel.setText("Adjust Row #");
   rowlabel.setOpaque(false);
-  buildButton = new GButton(userControl, 14, 129, 80, 30);
+  buildButton = new GButton(userControl, 14, 137, 80, 30);
   buildButton.setText("Building");
   buildButton.addEventHandler(this, "buildingButton");
-  busButton = new GButton(userControl, 13, 168, 80, 30);
+  busButton = new GButton(userControl, 14, 190, 80, 30);
   busButton.setText("Bus Stop");
   busButton.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   busButton.addEventHandler(this, "busstopButton");
-  storeButton = new GButton(userControl, 13, 211, 80, 30);
+  storeButton = new GButton(userControl, 15, 242, 80, 30);
   storeButton.setText("My Store ");
   storeButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   storeButton.addEventHandler(this, "mystoreButton");
-  roadButton = new GButton(userControl, 13, 254, 80, 30);
+  roadButton = new GButton(userControl, 14, 292, 80, 30);
   roadButton.setText("Road");
   roadButton.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
   roadButton.addEventHandler(this, "roadsButton");
-  submitButton = new GButton(userControl, 185, 358, 80, 30);
+  submitButton = new GButton(userControl, 205, 358, 80, 30);
   submitButton.setText("SUBMIT");
   submitButton.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   submitButton.addEventHandler(this, "submit");
-  deleteButton = new GButton(userControl, 185, 316, 80, 30);
+  deleteButton = new GButton(userControl, 111, 358, 80, 30);
   deleteButton.setText("DELETE");
   deleteButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   deleteButton.addEventHandler(this, "delete");
-  storeName = new GTextField(userControl, 13, 355, 120, 30, G4P.SCROLLBARS_NONE);
+  storeName = new GTextField(userControl, 152, 289, 120, 30, G4P.SCROLLBARS_NONE);
   storeName.setOpaque(true);
   storeName.addEventHandler(this, "NameofStore");
-  storeLabel = new GLabel(userControl, 17, 307, 126, 40);
+  storeLabel = new GLabel(userControl, 151, 238, 126, 40);
   storeLabel.setText("What is the name of your store?");
   storeLabel.setOpaque(false);
-  populationNum = new GCustomSlider(userControl, 161, 147, 100, 40, "grey_blue");
+  populationNum = new GCustomSlider(userControl, 160, 181, 100, 40, "grey_blue");
   populationNum.setShowValue(true);
   populationNum.setLimits(20, 20, 100);
   populationNum.setNumberFormat(G4P.INTEGER, 0);
   populationNum.setOpaque(false);
   populationNum.addEventHandler(this, "populationSlider");
-  popLabel = new GLabel(userControl, 160, 124, 137, 20);
+  popLabel = new GLabel(userControl, 155, 147, 137, 20);
   popLabel.setText("Change Population Size");
   popLabel.setOpaque(false);
-  clearLayout = new GButton(userControl, 184, 275, 80, 30);
+  clearLayout = new GButton(userControl, 15, 358, 80, 30);
   clearLayout.setText("CLEAR");
   clearLayout.addEventHandler(this, "clearButton");
   displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 300, 400, JAVA2D);
@@ -323,7 +351,7 @@ public void createGUI(){
   weatherType = new GDropList(displayControl, 75, 80, 150, 80, 3, 10);
   weatherType.setItems(loadStrings("list_423305"), 0);
   weatherType.addEventHandler(this, "weatherPick");
-  placeAdvertisement = new GButton(displayControl, 75, 325, 150, 50);
+  placeAdvertisement = new GButton(displayControl, 150, 322, 134, 43);
   placeAdvertisement.setText("Place Advertisement");
   placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
@@ -336,6 +364,10 @@ public void createGUI(){
   storeProductPriceLabel.setText("What is the average price of product in your store?");
   storeProductPriceLabel.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   storeProductPriceLabel.setOpaque(false);
+  timeButton = new GButton(displayControl, 10, 322, 120, 42);
+  timeButton.setText("Time and Date");
+  timeButton.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
+  timeButton.addEventHandler(this, "goToTime");
   timer1 = new GTimer(this, this, "timer1_Action1", 1000);
   advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 300, 350, JAVA2D);
   advertisingControl.noLoop();
@@ -361,9 +393,36 @@ public void createGUI(){
   deleteAd.setText("Delete");
   deleteAd.setLocalColorScheme(GCScheme.RED_SCHEME);
   deleteAd.addEventHandler(this, "deleteAdClicked");
+  timeWindow = GWindow.getWindow(this, "Time Controls", 0, 0, 300, 300, JAVA2D);
+  timeWindow.noLoop();
+  timeWindow.setActionOnClose(G4P.KEEP_OPEN);
+  timeWindow.addDrawHandler(this, "timecontrol");
+  timeLabel = new GLabel(timeWindow, 108, 9, 93, 20);
+  timeLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  timeLabel.setText("Time Controls");
+  timeLabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  timeLabel.setOpaque(false);
+  hoursLabel = new GLabel(timeWindow, 70, 61, 180, 20);
+  hoursLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  hoursLabel.setText("What time is it? (Hours only)");
+  hoursLabel.setOpaque(false);
+  dateLabel = new GLabel(timeWindow, 53, 146, 214, 20);
+  dateLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  dateLabel.setText("What is the date? (MM/DD/YYYY)");
+  dateLabel.setOpaque(false);
+  hoursInput = new GTextField(timeWindow, 97, 92, 120, 30, G4P.SCROLLBARS_NONE);
+  hoursInput.setOpaque(true);
+  hoursInput.addEventHandler(this, "inputHours");
+  dateText = new GTextField(timeWindow, 94, 181, 120, 30, G4P.SCROLLBARS_NONE);
+  dateText.setOpaque(true);
+  dateText.addEventHandler(this, "inputDate");
+  backButton = new GButton(timeWindow, 99, 247, 97, 37);
+  backButton.setText("Back");
+  backButton.addEventHandler(this, "goToDisplay");
   userControl.loop();
   displayControl.loop();
   advertisingControl.loop();
+  timeWindow.loop();
 }
 
 // Variable declarations 
@@ -396,6 +455,7 @@ GDropList weatherType;
 GButton placeAdvertisement; 
 GDropList storeProductPrice; 
 GLabel storeProductPriceLabel; 
+GButton timeButton; 
 GTimer timer1; 
 GWindow advertisingControl;
 GButton adBackButton; 
@@ -403,3 +463,10 @@ GButton placeBillboard;
 GLabel label1; 
 GButton placeBusStop; 
 GButton deleteAd; 
+GWindow timeWindow;
+GLabel timeLabel; 
+GLabel hoursLabel; 
+GLabel dateLabel; 
+GTextField hoursInput; 
+GTextField dateText; 
+GButton backButton; 

@@ -62,6 +62,7 @@ void setup() {
   displayControl.setVisible(false);
   advertisingControl.setVisible(false);
   populationNum.setEnabled(true);
+  timeWindow.setVisible(false);
  
   weather = new Weather("sunny");
   
