@@ -1,0 +1,416 @@
+/* =========================================================
+ * ====                   WARNING                        ===
+ * =========================================================
+ * The code in this tab has been generated from the GUI form
+ * designer and care should be taken when editing this file.
+ * Only add/edit code inside the event handlers i.e. only
+ * use lines between the matching comment tags. e.g.
+
+ void myBtnEvents(GButton button) { //_CODE_:button1:12356:
+     // It is safe to enter your event code here  
+ } //_CODE_:button1:12356:
+ 
+ * Do not rename this tab!
+ * =========================================================
+ */
+
+synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:userControl:709282:
+  appc.background(230);
+} //_CODE_:userControl:709282:
+
+public void columnsSlider(GCustomSlider source, GEvent event) { //_CODE_:colSlider:688321:
+  cols = colSlider.getValueI();
+
+  // recreate layout (because the columns of grid have changed)
+  layout = new Layout(rows, cols);
+
+  //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
+  population = new Person[0];
+  
+  // generate new AdLayout
+  adLayout = new AdvertisementLayout(rows, cols);
+  
+  colSpacing = width / layout.numCityCols;
+
+  // Reset store-related values (makes it so that you can still place only one store)
+  layout.storeplaced = false;
+  layout.storeRow = -1;
+  layout.storeCol = -1;
+  layout.storeName = "";
+  
+  layout.structureType = 5;  // Reset mode after recreation
+
+  //If currently building the layout then the controls are visible
+  screenType = "building";     
+  userControl.setVisible(true);
+  displayControl.setVisible(false);
+} //_CODE_:colSlider:688321:
+
+public void rowSlider(GCustomSlider source, GEvent event) { //_CODE_:rSlider:837005:
+  rows = rSlider.getValueI();
+
+  // recreate layout (because the columns of grid have changed)
+  layout = new Layout(rows, cols);
+
+  //clear population so no Person objects reference old layout while it's being rebuilt (prevents null exception)
+  population = new Person[0];
+  
+  // making new Ad layout
+  adLayout = new AdvertisementLayout(rows, cols);
+  
+  rowSpacing = height / layout.numCityRows;
+
+  // Reset store-related values (makes it so that you can still place only one store)
+  layout.storeplaced = false;
+  layout.storeRow = -1;
+  layout.storeCol = -1;
+  layout.storeName = "";
+  
+  layout.structureType = 5;  // Reset mode after recreation
+
+  //If currently bulding the layout then the controls are visible
+  screenType = "building";     
+  userControl.setVisible(true);
+  displayControl.setVisible(false);
+} //_CODE_:rSlider:837005:
+
+public void buildingButton(GButton source, GEvent event) { //_CODE_:buildButton:634112:
+  layout.structureType = 4;
+  layout.buttonClicked = true;
+  println("Building mode selected");
+} //_CODE_:buildButton:634112:
+
+public void busstopButton(GButton source, GEvent event) { //_CODE_:busButton:942668:
+  layout.structureType = 2;
+  layout.buttonClicked = true;
+  println("Bus Stop mode selected");
+} //_CODE_:busButton:942668:
+
+public void mystoreButton(GButton source, GEvent event) { //_CODE_:storeButton:224962:
+  layout.structureType = 1;
+  layout.buttonClicked = true;
+  println("Store mode selected");
+} //_CODE_:storeButton:224962:
+
+public void roadsButton(GButton source, GEvent event) { //_CODE_:roadButton:708872:
+  layout.structureType = 3;
+  layout.buttonClicked = true;
+  println("Road mode selected");
+} //_CODE_:roadButton:708872:
+
+public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
+  
+  if (layout.hasEmptyCell() == false){
+   println("You can not fill the whole grid, how will people walk to your store????"); 
+  }
+  
+  else{
+  if (layout.storeplaced) {
+    screenType = "display";
+
+    generatePopulation();
+    generateCars();
+    
+    userControl.setVisible(false);
+    displayControl.setVisible(true);
+    advertisingControl.setVisible(false);
+    
+    layout.buttonClicked = false;
+  }
+  else{
+    println("No store placed.");
+  }
+  }
+} //_CODE_:submitButton:798579:
+
+public void delete(GButton source, GEvent event) { //_CODE_:deleteButton:591698:
+  //Getting rid of structure type (nothing assigned)
+  layout.structureType = -1;
+  layout.buttonClicked = true;
+  println("Delete mode");
+} //_CODE_:deleteButton:591698:
+
+public void NameofStore(GTextField source, GEvent event) { //_CODE_:storeName:458681:
+  String entered = storeName.getText().trim();
+
+  if (entered.length() > 0) {
+    //println("User entered store name: " + entered);
+    layout.storeName = entered;
+  } else {
+    println("No text entered.");
+  }
+} //_CODE_:storeName:458681:
+
+public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:populationNum:692818:
+  populationNumber = populationNum.getValueI();
+} //_CODE_:populationNum:692818:
+
+public void carNumSlider(GCustomSlider source, GEvent event) { //_CODE_:carNumber:480195:
+  carNum = carNumber.getValueI();
+} //_CODE_:carNumber:480195:
+
+public void clearButton(GButton source, GEvent event) { //_CODE_:clearLayout:672061:
+  println("clearLayout - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:clearLayout:672061:
+
+synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
+} //_CODE_:displayControl:510305:
+
+public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:423305:
+
+  weatherRowNum = source.getSelectedIndex();
+  
+  weatherChosen = true;
+   if (weatherRowNum == 0)
+     weather = new Weather("sunny");
+   else if (weatherRowNum == 1)
+     weather = new Weather("raining");
+   else if (weatherRowNum == 2)
+     weather = new Weather("snowing");
+   else
+     println("error?");
+  println("weatherType - GDropList >> GEvent." + event + " @ " + millis());
+} //_CODE_:weatherType:423305:
+
+public void placeAdvertisementClicked(GButton source, GEvent event) { //_CODE_:placeAdvertisement:444896:
+  screenType = "advertising";
+  userControl.setVisible(false);
+  displayControl.setVisible(false);
+  advertisingControl.setVisible(true);
+} //_CODE_:placeAdvertisement:444896:
+
+public void storeProductPriceClicked(GDropList source, GEvent event) { //_CODE_:storeProductPrice:520426:
+  println("storeProductPrice - GDropList >> GEvent." + event + " @ " + millis());
+} //_CODE_:storeProductPrice:520426:
+
+public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
+  println("timer1 - GTimer >> an event occured @ " + millis());
+} //_CODE_:timer1:500679:
+
+synchronized public void advertisingControls(PApplet appc, GWinData data) { //_CODE_:advertisingControl:761879:
+  appc.background(230);
+} //_CODE_:advertisingControl:761879:
+
+public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackButton:980623:
+  screenType = "display";
+  adLayout.adButtonClicked = false;
+  adLayout.placeAdType = "none";
+  
+  generatePopulation();
+  generateCars();
+
+  userControl.setVisible(false);
+  displayControl.setVisible(true);
+  advertisingControl.setVisible(false);
+} //_CODE_:adBackButton:980623:
+
+public void placeBillboardClicked(GButton source, GEvent event) { //_CODE_:placeBillboard:385568:
+  adLayout.adButtonClicked = true;
+  adLayout.placeAdType = "billboard";
+  
+} //_CODE_:placeBillboard:385568:
+
+public void placeBusStopClicked(GButton source, GEvent event) { //_CODE_:placeBusStop:211977:
+  adLayout.adButtonClicked = true;
+  adLayout.placeAdType = "busStop";
+} //_CODE_:placeBusStop:211977:
+
+public void deleteAdClicked(GButton source, GEvent event) { //_CODE_:deleteAd:669066:
+  adLayout.adButtonClicked = true;
+  adLayout.placeAdType = "none";
+} //_CODE_:deleteAd:669066:
+
+
+
+// Create all the GUI controls. 
+// autogenerated do not edit
+public void createGUI(){
+  G4P.messagesEnabled(false);
+  G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
+  G4P.setMouseOverEnabled(false);
+  surface.setTitle("Remodail");
+  userControl = GWindow.getWindow(this, "userControls", 0, 0, 300, 400, JAVA2D);
+  userControl.noLoop();
+  userControl.setActionOnClose(G4P.KEEP_OPEN);
+  userControl.addDrawHandler(this, "win_draw1");
+  usercontrols = new GLabel(userControl, 79, 5, 122, 20);
+  usercontrols.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  usercontrols.setText("User Controls");
+  usercontrols.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
+  usercontrols.setOpaque(false);
+  colSlider = new GCustomSlider(userControl, 14, 72, 100, 40, "red_yellow18px");
+  colSlider.setShowValue(true);
+  colSlider.setLimits(12, 5, 20);
+  colSlider.setNumberFormat(G4P.INTEGER, 0);
+  colSlider.setLocalColorScheme(GCScheme.RED_SCHEME);
+  colSlider.setOpaque(false);
+  colSlider.addEventHandler(this, "columnsSlider");
+  collabel = new GLabel(userControl, -1, 41, 124, 20);
+  collabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  collabel.setText("Adjust Column #");
+  collabel.setLocalColorScheme(GCScheme.RED_SCHEME);
+  collabel.setOpaque(false);
+  rSlider = new GCustomSlider(userControl, 161, 71, 100, 40, "blue18px");
+  rSlider.setShowValue(true);
+  rSlider.setLimits(7, 5, 20);
+  rSlider.setNumberFormat(G4P.INTEGER, 0);
+  rSlider.setOpaque(false);
+  rSlider.addEventHandler(this, "rowSlider");
+  rowlabel = new GLabel(userControl, 163, 41, 80, 20);
+  rowlabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  rowlabel.setText("Adjust Row #");
+  rowlabel.setOpaque(false);
+  buildButton = new GButton(userControl, 14, 129, 80, 30);
+  buildButton.setText("Building");
+  buildButton.addEventHandler(this, "buildingButton");
+  busButton = new GButton(userControl, 13, 168, 80, 30);
+  busButton.setText("Bus Stop");
+  busButton.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
+  busButton.addEventHandler(this, "busstopButton");
+  storeButton = new GButton(userControl, 13, 211, 80, 30);
+  storeButton.setText("My Store ");
+  storeButton.setLocalColorScheme(GCScheme.RED_SCHEME);
+  storeButton.addEventHandler(this, "mystoreButton");
+  roadButton = new GButton(userControl, 13, 254, 80, 30);
+  roadButton.setText("Road");
+  roadButton.setLocalColorScheme(GCScheme.PURPLE_SCHEME);
+  roadButton.addEventHandler(this, "roadsButton");
+  submitButton = new GButton(userControl, 185, 358, 80, 30);
+  submitButton.setText("SUBMIT");
+  submitButton.setLocalColorScheme(GCScheme.CYAN_SCHEME);
+  submitButton.addEventHandler(this, "submit");
+  deleteButton = new GButton(userControl, 185, 316, 80, 30);
+  deleteButton.setText("DELETE");
+  deleteButton.setLocalColorScheme(GCScheme.RED_SCHEME);
+  deleteButton.addEventHandler(this, "delete");
+  storeName = new GTextField(userControl, 13, 355, 120, 30, G4P.SCROLLBARS_NONE);
+  storeName.setOpaque(true);
+  storeName.addEventHandler(this, "NameofStore");
+  storeLabel = new GLabel(userControl, 17, 307, 126, 40);
+  storeLabel.setText("What is the name of your store?");
+  storeLabel.setOpaque(false);
+  populationNum = new GCustomSlider(userControl, 161, 147, 100, 40, "grey_blue");
+  populationNum.setShowValue(true);
+  populationNum.setLimits(20, 20, 100);
+  populationNum.setNumberFormat(G4P.INTEGER, 0);
+  populationNum.setOpaque(false);
+  populationNum.addEventHandler(this, "populationSlider");
+  popLabel = new GLabel(userControl, 160, 124, 137, 20);
+  popLabel.setText("Change Population Size");
+  popLabel.setOpaque(false);
+  CarNumlabel = new GLabel(userControl, 159, 196, 136, 20);
+  CarNumlabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  CarNumlabel.setText("Change Car Amount");
+  CarNumlabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  CarNumlabel.setOpaque(false);
+  carNumber = new GCustomSlider(userControl, 161, 225, 100, 40, "red_yellow18px");
+  carNumber.setLimits(5, 1, 8);
+  carNumber.setNumberFormat(G4P.INTEGER, 0);
+  carNumber.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  carNumber.setOpaque(false);
+  carNumber.addEventHandler(this, "carNumSlider");
+  clearLayout = new GButton(userControl, 184, 275, 80, 30);
+  clearLayout.setText("CLEAR");
+  clearLayout.addEventHandler(this, "clearButton");
+  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 300, 400, JAVA2D);
+  displayControl.noLoop();
+  displayControl.setActionOnClose(G4P.KEEP_OPEN);
+  displayControl.addDrawHandler(this, "displayControls");
+  displayLabel = new GLabel(displayControl, 75, 4, 150, 20);
+  displayLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  displayLabel.setText("Display Controls");
+  displayLabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  displayLabel.setOpaque(false);
+  weatherQ = new GLabel(displayControl, 75, 30, 150, 50);
+  weatherQ.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  weatherQ.setText("What will the weather be like in the city?");
+  weatherQ.setOpaque(false);
+  togGroup1 = new GToggleGroup();
+  WeatherType = new GToggleGroup();
+  togGroup2 = new GToggleGroup();
+  togGroup3 = new GToggleGroup();
+  weatherType = new GDropList(displayControl, 75, 80, 150, 80, 3, 10);
+  weatherType.setItems(loadStrings("list_423305"), 0);
+  weatherType.addEventHandler(this, "weatherPick");
+  placeAdvertisement = new GButton(displayControl, 75, 325, 150, 50);
+  placeAdvertisement.setText("Place Advertisement");
+  placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
+  placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
+  storeProductPrice = new GDropList(displayControl, 75, 210, 150, 80, 3, 10);
+  storeProductPrice.setItems(loadStrings("list_520426"), 0);
+  storeProductPrice.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  storeProductPrice.addEventHandler(this, "storeProductPriceClicked");
+  storeProductPriceLabel = new GLabel(displayControl, 75, 160, 150, 50);
+  storeProductPriceLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  storeProductPriceLabel.setText("What is the average price of product in your store?");
+  storeProductPriceLabel.setLocalColorScheme(GCScheme.GREEN_SCHEME);
+  storeProductPriceLabel.setOpaque(false);
+  timer1 = new GTimer(this, this, "timer1_Action1", 1000);
+  advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 300, 350, JAVA2D);
+  advertisingControl.noLoop();
+  advertisingControl.setActionOnClose(G4P.CLOSE_WINDOW);
+  advertisingControl.addDrawHandler(this, "advertisingControls");
+  adBackButton = new GButton(advertisingControl, 15, 300, 100, 40);
+  adBackButton.setText("Back");
+  adBackButton.setLocalColorScheme(GCScheme.RED_SCHEME);
+  adBackButton.addEventHandler(this, "adBackButtonClicked");
+  placeBillboard = new GButton(advertisingControl, 100, 80, 100, 40);
+  placeBillboard.setText("Billboard");
+  placeBillboard.addEventHandler(this, "placeBillboardClicked");
+  label1 = new GLabel(advertisingControl, 75, 25, 150, 30);
+  label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label1.setText("Advertisement Type");
+  label1.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
+  label1.setOpaque(false);
+  placeBusStop = new GButton(advertisingControl, 100, 150, 100, 40);
+  placeBusStop.setText("Bus Stop");
+  placeBusStop.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
+  placeBusStop.addEventHandler(this, "placeBusStopClicked");
+  deleteAd = new GButton(advertisingControl, 100, 220, 100, 40);
+  deleteAd.setText("Delete");
+  deleteAd.setLocalColorScheme(GCScheme.RED_SCHEME);
+  deleteAd.addEventHandler(this, "deleteAdClicked");
+  userControl.loop();
+  displayControl.loop();
+  advertisingControl.loop();
+}
+
+// Variable declarations 
+// autogenerated do not edit
+GWindow userControl;
+GLabel usercontrols; 
+GCustomSlider colSlider; 
+GLabel collabel; 
+GCustomSlider rSlider; 
+GLabel rowlabel; 
+GButton buildButton; 
+GButton busButton; 
+GButton storeButton; 
+GButton roadButton; 
+GButton submitButton; 
+GButton deleteButton; 
+GTextField storeName; 
+GLabel storeLabel; 
+GCustomSlider populationNum; 
+GLabel popLabel; 
+GLabel CarNumlabel; 
+GCustomSlider carNumber; 
+GButton clearLayout; 
+GWindow displayControl;
+GLabel displayLabel; 
+GLabel weatherQ; 
+GToggleGroup togGroup1; 
+GToggleGroup WeatherType; 
+GToggleGroup togGroup2; 
+GToggleGroup togGroup3; 
+GDropList weatherType; 
+GButton placeAdvertisement; 
+GDropList storeProductPrice; 
+GLabel storeProductPriceLabel; 
+GTimer timer1; 
+GWindow advertisingControl;
+GButton adBackButton; 
+GButton placeBillboard; 
+GLabel label1; 
+GButton placeBusStop; 
+GButton deleteAd; 
