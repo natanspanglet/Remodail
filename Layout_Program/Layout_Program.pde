@@ -73,9 +73,7 @@ void setup() {
   adLayout = new AdvertisementLayout(layout.numCityRows, layout.numCityCols);
   
   mostHolidays = loadStrings("holidayData.txt");
-  //Time theTime = new Time("10:00", 12, 12, 2025);
-  //theTimes[0] = theTime;
-    
+
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
 
