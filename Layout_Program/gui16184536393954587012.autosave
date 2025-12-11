@@ -107,7 +107,7 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
   else{
   if (layout.storeplaced) {
     screenType = "display";
-    // generateCars();
+    //generateCars();
     generatePopulation();
     
     userControl.setVisible(false);
@@ -145,7 +145,7 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 } //_CODE_:populationNum:692818:
 
 public void carNumSlider(GCustomSlider source, GEvent event) { //_CODE_:carNumber:480195:
-  // carNum = carNumber.getValueI();
+  carNum = carNumber.getValueI();
 } //_CODE_:carNumber:480195:
 
 public void clearButton(GButton source, GEvent event) { //_CODE_:clearLayout:672061:
@@ -195,7 +195,7 @@ public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackB
   adLayout.adButtonClicked = false;
   adLayout.placeAdType = "none";
   
-  // generateCars();
+  generateCars();
   generatePopulation();
   
   userControl.setVisible(false);
@@ -218,7 +218,6 @@ public void deleteAdClicked(GButton source, GEvent event) { //_CODE_:deleteAd:66
   adLayout.adButtonClicked = true;
   adLayout.placeAdType = "none";
 } //_CODE_:deleteAd:669066:
-
 
 
 // Create all the GUI controls. 

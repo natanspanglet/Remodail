@@ -9,7 +9,7 @@ class Person { //<>// //<>//
   
   //Car Stuff 
   float carPickupThreshold = 0.5; // Buy urge threshold
-  Car targetCar;
+  // Car targetCar;
 
   Person(PVector p, PVector v, float s, float m, float pA) {
     this.pos = p;

@@ -94,23 +94,23 @@ void valiDate(int hr, int yr, int mn, int dy) {
 }
 
 // Helper function to generate a new population each time the slider is changed
-void generateCars() {
-  // Creating a new person array no matter what when generating a new population
-  cars = new Car[carNum];
+//void generateCars() {
+//  // Creating a new person array no matter what when generating a new population
+//  cars = new Car[carNum];
   
-  for (int i = 0; i < cars.length; i++) {
+//  for (int i = 0; i < cars.length; i++) {
     
-    boolean carValidPlacement = false; // Used to make sure that the new randomly assigned position vector of the person is in a valid location (i.e on grass)
-    PVector c = new PVector(0, 0); // Position vector used for the new person
+//    boolean carValidPlacement = false; // Used to make sure that the new randomly assigned position vector of the person is in a valid location (i.e on grass)
+//    PVector c = new PVector(0, 0); // Position vector used for the new person
 
-    while (carValidPlacement == false) {
-      c = new PVector(int(random(0, width)), int(random(0, height))); // Random location on the screen
-      carValidPlacement = validPlacement(c, 3); // Making sure that it's on grass. If it returns true, the loop will stop.
-    }
+//    while (carValidPlacement == false) {
+//      c = new PVector(int(random(0, width)), int(random(0, height))); // Random location on the screen
+//      carValidPlacement = validPlacement(c, 3); // Making sure that it's on grass. If it returns true, the loop will stop.
+//    }
     
-    //float angle = random(0, TWO_PI); // Initial heading of the person.
-    float speed = random(1.2, 3.5); // How fast the person can walk.
-    //PVector v = new PVector(speed*cos(angle), speed*sin(angle)); // The person's velocity
-    cars[i] = new Car(speed, c, cars);
-  }
-}
+//    //float angle = random(0, TWO_PI); // Initial heading of the person.
+//    float speed = random(1.2, 3.5); // How fast the person can walk.
+//    //PVector v = new PVector(speed*cos(angle), speed*sin(angle)); // The person's velocity
+//    cars[i] = new Car(speed, c, cars);
+//  }
+//}
