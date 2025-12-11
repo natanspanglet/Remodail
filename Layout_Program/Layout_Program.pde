@@ -126,7 +126,7 @@ void draw() {
     //  c.move();
     //}
     
-    fill(255);
+    fill(0);
     String storeRevenueText = "Your Store Revenue: $" + storeRevenue;
 
     text(storeRevenueText, 600, 500);

@@ -38,7 +38,7 @@ class Time {
     this.timeFont = createFont("Arial", 36);
     
     this.timeIndex = 0;
-    this.speedFactor = 10;
+    this.speedFactor = 60;
     
     int colonIndex = dayTime.indexOf(":");
     this.hourOfDay = int(dayTime.substring(0, colonIndex));
