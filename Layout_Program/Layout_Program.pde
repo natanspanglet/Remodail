@@ -12,14 +12,10 @@ int storeProductPriceRowNum = 0;
 float storeRevenue = 0;
 
 String screenType; // building, display, advertising
-//float carSize;
 
 Weather weather;
 boolean weatherChosen = true;
 int weatherRowNum = 0;
-
-//Car[] cars; 
-//int carNum;
 
 Person[] population;
 int populationNumber;
@@ -69,8 +65,6 @@ void setup() {
  
   weather = new Weather("sunny");
   
-  // carNum = 5;
-  
   populationNumber = 20;
   
   screenType = "building";
@@ -83,10 +77,7 @@ void setup() {
     
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
-  
-  // float cellSize = height / (float) rows;   // size of one grid square
-  // carSize  = cellSize / 2.0; 
-  
+
   PFont f1 = createFont("Arial", 36);
   textFont(f1);
   background(50, 196, 109);
@@ -104,6 +95,7 @@ void draw() {
   if (screenType.equals("display")) {
     theTimes[0].display();
     theTimes[0].update();
+    println(theTimes[0].hourOfDay);
     
     if (population == null) {
       println("POPULATION IS NULL");
@@ -116,15 +108,6 @@ void draw() {
     if (weatherChosen){
       weather.update();
     }
-     
-    //if (cars == null) {
-    //  println("CARS IS NULL");
-    //}
-    //for(Car c: cars) {
-    //  println(c);
-    //  c.drawCar();
-    //  c.move();
-    //}
     
     fill(0);
     String storeRevenueText = "Your Store Revenue: $" + storeRevenue;

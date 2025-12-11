@@ -65,6 +65,14 @@ void generatePopulation() {
   }
 }
 
+void changePopulationVisiblity(int chance) {
+  for (Person p: population) {
+     if (random(0, 100) <= chance) {
+       p.visible = false;
+     }
+   }
+}
+
 // Function used to shuffle the direction array when pathfinding to the store. Used to add randomness in how the people go to the store.
 int[][] shuffleAdjDirectionArray() {
   shuffleIndexes.shuffle(); // .shuffle() shuffles the array into some random order, allowing for the order of the adjacent directions to be visualized.
@@ -92,25 +100,3 @@ void valiDate(int hr, int yr, int mn, int dy) {
   String hourInput = str(hr) + ":00";
   //theTimes[0] = new Time(hourInput, day, month, year);
 }
-
-// Helper function to generate a new population each time the slider is changed
-//void generateCars() {
-//  // Creating a new person array no matter what when generating a new population
-//  cars = new Car[carNum];
-  
-//  for (int i = 0; i < cars.length; i++) {
-    
-//    boolean carValidPlacement = false; // Used to make sure that the new randomly assigned position vector of the person is in a valid location (i.e on grass)
-//    PVector c = new PVector(0, 0); // Position vector used for the new person
-
-//    while (carValidPlacement == false) {
-//      c = new PVector(int(random(0, width)), int(random(0, height))); // Random location on the screen
-//      carValidPlacement = validPlacement(c, 3); // Making sure that it's on grass. If it returns true, the loop will stop.
-//    }
-    
-//    //float angle = random(0, TWO_PI); // Initial heading of the person.
-//    float speed = random(1.2, 3.5); // How fast the person can walk.
-//    //PVector v = new PVector(speed*cos(angle), speed*sin(angle)); // The person's velocity
-//    cars[i] = new Car(speed, c, cars);
-//  }
-//}

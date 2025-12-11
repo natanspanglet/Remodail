@@ -107,7 +107,6 @@ public void submit(GButton source, GEvent event) { //_CODE_:submitButton:798579:
   else{
   if (layout.storeplaced) {
     screenType = "display";
-    // generateCars();
     generatePopulation();
     
     userControl.setVisible(false);
@@ -144,10 +143,6 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
   populationNumber = populationNum.getValueI();
 } //_CODE_:populationNum:692818:
 
-public void carNumSlider(GCustomSlider source, GEvent event) { //_CODE_:carNumber:480195:
-  // carNum = carNumber.getValueI();
-} //_CODE_:carNumber:480195:
-
 public void clearButton(GButton source, GEvent event) { //_CODE_:clearLayout:672061:
   println("clearLayout - GButton >> GEvent." + event + " @ " + millis());
 } //_CODE_:clearLayout:672061:
@@ -160,12 +155,21 @@ public void weatherPick(GDropList source, GEvent event) { //_CODE_:weatherType:4
   weatherRowNum = source.getSelectedIndex();
   
   weatherChosen = true;
-   if (weatherRowNum == 0)
+  generatePopulation();
+  storeRevenue = 0;
+   if (weatherRowNum == 0) {
      weather = new Weather("sunny");
-   else if (weatherRowNum == 1)
+     changePopulationVisiblity(0);
+   }
+   else if (weatherRowNum == 1) {
      weather = new Weather("raining");
-   else if (weatherRowNum == 2)
+     changePopulationVisiblity(20);
+   }
+   
+   else if (weatherRowNum == 2) {
      weather = new Weather("snowing");
+     changePopulationVisiblity(30);
+   }
    else
      println("error?");
   println("weatherType - GDropList >> GEvent." + event + " @ " + millis());
@@ -195,7 +199,6 @@ public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackB
   adLayout.adButtonClicked = false;
   adLayout.placeAdType = "none";
   
-  // generateCars();
   generatePopulation();
   
   userControl.setVisible(false);
@@ -297,17 +300,6 @@ public void createGUI(){
   popLabel = new GLabel(userControl, 160, 124, 137, 20);
   popLabel.setText("Change Population Size");
   popLabel.setOpaque(false);
-  CarNumlabel = new GLabel(userControl, 159, 196, 136, 20);
-  CarNumlabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  CarNumlabel.setText("Change Car Amount");
-  CarNumlabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
-  CarNumlabel.setOpaque(false);
-  carNumber = new GCustomSlider(userControl, 161, 225, 100, 40, "red_yellow18px");
-  carNumber.setLimits(5, 1, 8);
-  carNumber.setNumberFormat(G4P.INTEGER, 0);
-  carNumber.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
-  carNumber.setOpaque(false);
-  carNumber.addEventHandler(this, "carNumSlider");
   clearLayout = new GButton(userControl, 184, 275, 80, 30);
   clearLayout.setText("CLEAR");
   clearLayout.addEventHandler(this, "clearButton");
@@ -392,8 +384,6 @@ GTextField storeName;
 GLabel storeLabel; 
 GCustomSlider populationNum; 
 GLabel popLabel; 
-GLabel CarNumlabel; 
-GCustomSlider carNumber; 
 GButton clearLayout; 
 GWindow displayControl;
 GLabel displayLabel; 
