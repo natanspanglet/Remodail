@@ -73,8 +73,8 @@ void setup() {
   adLayout = new AdvertisementLayout(layout.numCityRows, layout.numCityCols);
   
   mostHolidays = loadStrings("holidayData.txt");
-  Time theTime = new Time("10:00", 12, 12, 2025);
-  theTimes[0] = theTime;
+  //Time theTime = new Time("10:00", 12, 12, 2025);
+  //theTimes[0] = theTime;
     
   rowSpacing = height / layout.numCityRows;
   colSpacing = width / layout.numCityCols;
@@ -96,14 +96,18 @@ void draw() {
   // Drawing everything on the display screen
   if (screenType.equals("display")) {
     // Displaying the time
-    theTimes[0].display();
-    theTimes[0].update();
+    if (theTimes[0] != null){
+      theTimes[0].display();
+      theTimes[0].update();
+    }
     
     // Displaying the population
-    for(Person p: population) {
-      if (p.visible == true) {
-        p.drawMe();
-        p.move();
+    if (population != null) {
+      for(Person p: population) {
+        if (p.visible == true) {
+          p.drawMe();
+          p.move();
+        }
       }
     }
     

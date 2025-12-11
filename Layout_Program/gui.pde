@@ -235,19 +235,17 @@ synchronized public void timecontrol(PApplet appc, GWinData data) { //_CODE_:tim
 } //_CODE_:timeWindow:868211:
 
 public void inputHours(GTextField source, GEvent event) { //_CODE_:hoursInput:767417:
+
   println("textfield2 - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:hoursInput:767417:
 
 public void inputDate(GTextField source, GEvent event) { //_CODE_:dateText:617999:
+
   println("dateText - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:dateText:617999:
 
 public void goToDisplay(GButton source, GEvent event) { //_CODE_:backButton:370506:
   println("backButton - GButton >> GEvent." + event + " @ " + millis());
-
-  // Hide time window, show display controls
-  timeWindow.setVisible(false);
-  displayControl.setVisible(true);
 } //_CODE_:backButton:370506:
 
 
@@ -408,7 +406,7 @@ public void createGUI(){
   hoursLabel.setOpaque(false);
   dateLabel = new GLabel(timeWindow, 53, 146, 214, 20);
   dateLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  dateLabel.setText("What is the date? (MM/DD/YYYY)");
+  dateLabel.setText("What is the date? (DD/MM/YYYY)");
   dateLabel.setOpaque(false);
   hoursInput = new GTextField(timeWindow, 97, 92, 120, 30, G4P.SCROLLBARS_NONE);
   hoursInput.setOpaque(true);
@@ -416,8 +414,8 @@ public void createGUI(){
   dateText = new GTextField(timeWindow, 94, 181, 120, 30, G4P.SCROLLBARS_NONE);
   dateText.setOpaque(true);
   dateText.addEventHandler(this, "inputDate");
-  backButton = new GButton(timeWindow, 99, 247, 97, 37);
-  backButton.setText("Back");
+  backButton = new GButton(timeWindow, 101, 243, 97, 37);
+  backButton.setText("Confirm ");
   backButton.addEventHandler(this, "goToDisplay");
   userControl.loop();
   displayControl.loop();
