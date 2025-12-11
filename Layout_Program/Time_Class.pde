@@ -34,7 +34,7 @@ class Time {
   int[] daysInMonthLeapYear = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   
   //Constructor
-  Time(String dayTime, int weekDay, int monthDay, int theMonth, int theYear) {
+  Time(String dayTime, int monthDay, int theMonth, int theYear) {
     this.timeFont = createFont("Arial", 36);
     
     this.timeIndex = 0;
@@ -43,7 +43,7 @@ class Time {
     int colonIndex = dayTime.indexOf(":");
     this.hourOfDay = int(dayTime.substring(0, colonIndex));
     
-    this.weekDayIndex = weekDay;
+    this.weekDayIndex = this.getWeekDay(monthDay, theMonth, theYear);
     
     this.dayOfMonth = monthDay;
     this.month = theMonth - 1;
