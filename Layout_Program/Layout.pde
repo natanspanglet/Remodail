@@ -221,16 +221,16 @@ boolean hasEmptyCell(){
   return false;
 }
 
-void clearGrid(){
- //Deleting whole grid
-for (int i = 0; i < this.numCityRows; i ++) {
-      for (int j = 0; j < this.numCityCols; j ++) {
-        //Setting all square to 0 or grass 
-        this.cityLayout[i][j] = 0;
-        this.storeRow = -1; 
-        this.storeCol = -1;
-        population = new Person[0];
-}
-}
-}
+  void clearGrid(){
+     //Deleting whole grid
+    for (int i = 0; i < this.numCityRows; i ++) {
+        for (int j = 0; j < this.numCityCols; j ++) {
+          //Setting all square to 0 or grass 
+          this.cityLayout[i][j] = 0;
+          this.storeRow = -1; 
+          this.storeCol = -1;
+          population = new Person[0];
+      }
+    }
+  }
 }
