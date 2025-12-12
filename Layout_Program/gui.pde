@@ -144,7 +144,7 @@ public void populationSlider(GCustomSlider source, GEvent event) { //_CODE_:popu
 } //_CODE_:populationNum:692818:
 
 public void clearButton(GButton source, GEvent event) { //_CODE_:clearLayout:672061:
-  //layout.clearGrid();
+  layout.clearGrid();
 } //_CODE_:clearLayout:672061:
 
 synchronized public void displayControls(PApplet appc, GWinData data) { //_CODE_:displayControl:510305:
@@ -193,6 +193,28 @@ public void goToTime(GButton source, GEvent event) { //_CODE_:timeButton:554183:
   displayControl.setVisible(false);
   timeWindow.setVisible(true);
 } //_CODE_:timeButton:554183:
+
+public void backBuilding(GButton source, GEvent event) { //_CODE_:back:609704:
+  //Going back to building screen
+  screenType = "building";
+
+  userControl.setVisible(true);
+  displayControl.setVisible(false);
+  advertisingControl.setVisible(false);
+
+  //Getting rid of population
+  population = new Person[0];
+  
+  //Clearing the advertisments 
+  adLayout.clearAdvertisements();
+  
+  layout.buttonClicked = false;
+
+  //Resetting revenue to zero 
+  storeRevenue = 0;
+
+  println("Returned to building mode.");
+} //_CODE_:back:609704:
 
 public void timer1_Action1(GTimer source) { //_CODE_:timer1:500679:
   println("timer1 - GTimer >> an event occured @ " + millis());
@@ -248,7 +270,26 @@ public void inputDate(GTextField source, GEvent event) { //_CODE_:dateText:61799
 } //_CODE_:dateText:617999:
 
 public void goToDisplay(GButton source, GEvent event) { //_CODE_:backButton:370506:
-  println("backButton - GButton >> GEvent." + event + " @ " + millis());
+  //Get user input 
+  String hours = hoursInput.getText().trim();
+  String date = dateText.getText().trim();
+  
+  //Parse date
+  String[] parts = date.split("/");
+  if(parts.length ==3){
+   int month = int(parts[0]);
+   int day = int(parts[1]);
+   int year = int(parts[2]);
+  
+  theTimes[0] = new Time(hours, day, month, year);
+  
+  println("Updated time: " + hours+ "on " + date);
+}else{
+  println("Invalid date. Must be MM/DD/YYYY.");
+}
+
+timeWindow.setVisible(false);
+displayControl.setVisible(true);
 } //_CODE_:backButton:370506:
 
 
@@ -332,16 +373,16 @@ public void createGUI(){
   clearLayout = new GButton(userControl, 15, 358, 80, 30);
   clearLayout.setText("CLEAR");
   clearLayout.addEventHandler(this, "clearButton");
-  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 300, 400, JAVA2D);
+  displayControl = GWindow.getWindow(this, "Display Controls ", 0, 0, 380, 250, JAVA2D);
   displayControl.noLoop();
   displayControl.setActionOnClose(G4P.KEEP_OPEN);
   displayControl.addDrawHandler(this, "displayControls");
-  displayLabel = new GLabel(displayControl, 75, 4, 150, 20);
+  displayLabel = new GLabel(displayControl, 118, 4, 150, 20);
   displayLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   displayLabel.setText("Display Controls");
   displayLabel.setLocalColorScheme(GCScheme.ORANGE_SCHEME);
   displayLabel.setOpaque(false);
-  weatherQ = new GLabel(displayControl, 75, 30, 150, 50);
+  weatherQ = new GLabel(displayControl, 12, 30, 150, 50);
   weatherQ.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   weatherQ.setText("What will the weather be like in the city?");
   weatherQ.setOpaque(false);
@@ -349,26 +390,29 @@ public void createGUI(){
   WeatherType = new GToggleGroup();
   togGroup2 = new GToggleGroup();
   togGroup3 = new GToggleGroup();
-  weatherType = new GDropList(displayControl, 75, 80, 150, 80, 3, 10);
+  weatherType = new GDropList(displayControl, 10, 85, 150, 80, 3, 10);
   weatherType.setItems(loadStrings("list_423305"), 0);
   weatherType.addEventHandler(this, "weatherPick");
-  placeAdvertisement = new GButton(displayControl, 150, 322, 134, 43);
+  placeAdvertisement = new GButton(displayControl, 190, 140, 134, 43);
   placeAdvertisement.setText("Place Advertisement");
   placeAdvertisement.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   placeAdvertisement.addEventHandler(this, "placeAdvertisementClicked");
-  storeProductPrice = new GDropList(displayControl, 75, 210, 150, 80, 3, 10);
+  storeProductPrice = new GDropList(displayControl, 205, 88, 150, 80, 3, 10);
   storeProductPrice.setItems(loadStrings("list_520426"), 0);
   storeProductPrice.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   storeProductPrice.addEventHandler(this, "storeProductPriceClicked");
-  storeProductPriceLabel = new GLabel(displayControl, 75, 160, 150, 50);
+  storeProductPriceLabel = new GLabel(displayControl, 207, 30, 150, 50);
   storeProductPriceLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   storeProductPriceLabel.setText("What is the average price of product in your store?");
   storeProductPriceLabel.setLocalColorScheme(GCScheme.GREEN_SCHEME);
   storeProductPriceLabel.setOpaque(false);
-  timeButton = new GButton(displayControl, 10, 322, 120, 42);
+  timeButton = new GButton(displayControl, 58, 140, 120, 42);
   timeButton.setText("Time and Date");
-  timeButton.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   timeButton.addEventHandler(this, "goToTime");
+  back = new GButton(displayControl, 14, 203, 80, 30);
+  back.setText("BACK");
+  back.setLocalColorScheme(GCScheme.RED_SCHEME);
+  back.addEventHandler(this, "backBuilding");
   timer1 = new GTimer(this, this, "timer1_Action1", 1000);
   advertisingControl = GWindow.getWindow(this, "Advertising Controls", 0, 0, 300, 350, JAVA2D);
   advertisingControl.noLoop();
@@ -457,6 +501,7 @@ GButton placeAdvertisement;
 GDropList storeProductPrice; 
 GLabel storeProductPriceLabel; 
 GButton timeButton; 
+GButton back; 
 GTimer timer1; 
 GWindow advertisingControl;
 GButton adBackButton; 

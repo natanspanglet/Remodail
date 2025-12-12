@@ -66,7 +66,6 @@ void setup() {
   timeWindow.setVisible(false);
  
   weather = new Weather("sunny");
-  // can u see ts
   
   populationNumber = 20;
   

@@ -42,4 +42,15 @@ class AdvertisementLayout {
     }
   }
   
+      void clearAdvertisements() {
+  for (int i = 0; i < cityLayout.length; i++) {
+    for (int j = 0; j < cityLayout[0].length; j++) {
+      cityLayout[i][j].adType = "none";   // reset the ad in each cell
+    }
+  }
+
+  adButtonClicked = false;
+  placeAdType = "none";
+}
+
 }
