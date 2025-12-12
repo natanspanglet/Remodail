@@ -44,13 +44,6 @@ float roundAny(float x, int d) {
 
 // Helper function to generate a new population each time the slider is changed
 void generatePopulation() {
-  println("layout: " + layout);
-println("adLayout: " + adLayout);
-println("population: " + population);
-println("weather: " + weather);
-println("storeRow: " + layout.storeRow + ", storeCol: " + layout.storeCol);
-
-  
   // Creating a new person array no matter what when generating a new population
   population = new Person[populationNumber];
   

@@ -57,6 +57,7 @@ void setup() {
   size(800,600);
   layout = new Layout(rows, cols); 
   createGUI();
+  //population = new Person[populationNumber];
   
   //Makes sure the display pops up after submit button 
   displayControl.setVisible(false);
@@ -81,6 +82,8 @@ void setup() {
   PFont f1 = createFont("Arial", 36);
   textFont(f1);
   background(50, 196, 109);
+  theTimes[0] = new Time("9:00", 1, 1, 2025);
+  generatePopulation();
 }
 
 //Draw the grid, its features, and the preStructure() function of the Layout

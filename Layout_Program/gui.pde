@@ -207,11 +207,14 @@ public void adBackButtonClicked(GButton source, GEvent event) { //_CODE_:adBackB
   adLayout.adButtonClicked = false;
   adLayout.placeAdType = "none";
   
+  //Time[0] = new Time();
   generatePopulation();
   
   userControl.setVisible(false);
   displayControl.setVisible(true);
   advertisingControl.setVisible(false);
+  //timeWindow.setVisible(false);
+  
 } //_CODE_:adBackButton:980623:
 
 public void placeBillboardClicked(GButton source, GEvent event) { //_CODE_:placeBillboard:385568:
@@ -244,31 +247,9 @@ public void inputDate(GTextField source, GEvent event) { //_CODE_:dateText:61799
   println("dateText - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:dateText:617999:
 
-public void goToDisplay(GButton source, GEvent event) {
-
-  // Get user input
-  String hours = hoursInput.getText().trim();
-  String date = dateText.getText().trim();
-
-  // Parse date
-  String[] parts = date.split("/");
-  if (parts.length == 3) {
-    int month = int(parts[0]);
-    int day   = int(parts[1]);
-    int year  = int(parts[2]);
-
-    // Create new Time object
-    Time newTime = new Time(hours, month, day, year);
-    theTimes[0] = newTime;
-    println("Updated time: " + hours + " on " + date);
-  } else {
-    println("Invalid date. Must be MM/DD/YYYY.");
-  }
-
-  // Switch screens
-  timeWindow.setVisible(false);
-  displayControl.setVisible(true);
-}
+public void goToDisplay(GButton source, GEvent event) { //_CODE_:backButton:370506:
+  println("backButton - GButton >> GEvent." + event + " @ " + millis());
+} //_CODE_:backButton:370506:
 
 
 
